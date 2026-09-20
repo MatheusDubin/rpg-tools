@@ -178,50 +178,48 @@ window.CHAR = {
 
   features:[
     { group:'Raça — Changeling', src:'Eberron: Rising from the Last War', items:[
-      { name:'Metamorfo', sub:'1 ação', desc:[
+      { name:'Metamorfo', use:'action', sub:'1 ação', desc:[
         'Como uma ação, você pode mudar sua aparência e sua voz. Você determina os detalhes das mudanças, incluindo coloração, comprimento do cabelo e sexo. Também pode ajustar sua altura e peso, mas não a ponto de mudar sua categoria de tamanho. Pode se fazer parecer membro de outra raça, mas nenhuma das suas estatísticas de jogo muda. Não pode duplicar a aparência de uma criatura que nunca viu e deve adotar uma forma que tenha a mesma disposição básica de membros que a sua. Suas roupas e equipamento não são alterados por este traço.',
         'Você permanece na nova forma até usar uma ação para voltar à sua forma verdadeira ou até morrer.'
       ], mine:'<b>Na prática:</b> não é magia nem ilusão — Detectar Magia não acusa e Dissipar Magia não desfaz. Para se passar por alguém específico, o mestre pode pedir Carisma (Enganação) <b>{sk_enganacao}</b> contra a Intuição de quem conhece a pessoa. Roupas precisam ser trocadas de verdade (kit de disfarce ajuda).' },
-      { name:'Instintos de Metamorfo', sub:'Passivo', desc:['Você ganha proficiência em duas das seguintes perícias, à sua escolha: Enganação, Intimidação, Intuição ou Persuasão.'],
+      { name:'Instintos de Metamorfo', use:'passive', sub:'Passivo', desc:['Você ganha proficiência em duas das seguintes perícias, à sua escolha: Enganação, Intimidação, Intuição ou Persuasão.'],
         mine:'<b>Escolhidas:</b> Intuição ({sk_intuicao}) e Persuasão ({sk_persuasao}).' },
-      { name:'Tamanho, deslocamento e idiomas', sub:'Passivo', desc:['Changelings são Médios, com 1,5 m a 1,8 m de altura. Deslocamento base de 9 m. Falam, leem e escrevem Comum e dois outros idiomas à escolha.'],
+      { name:'Tamanho, deslocamento e idiomas', use:'passive', sub:'Passivo', desc:['Changelings são Médios, com 1,5 m a 1,8 m de altura. Deslocamento base de 9 m. Falam, leem e escrevem Comum e dois outros idiomas à escolha.'],
         mine:'<b>Idiomas:</b> Comum, Infernal (língua do Diabrete) e Silvestre. Sem visão no escuro.' },
     ]},
     { group:'Classe — Bruxo', src:"Player's Handbook · nível {level}", items:[
-      { name:'Trabalho com Magia (Pacto)', sub:'Nível 1', desc:[
+      { name:'Trabalho com Magia (Pacto)', use:'passive', sub:'Nível 1', desc:[
         'Sua pesquisa arcana e a magia concedida pelo seu patrono lhe deram acesso a magias. Você conhece 2 truques da lista do Bruxo (mais 1 no 4º e 10º nível) e magias de nível igual ou inferior ao dos seus espaços.',
         'Espaços de magia: a tabela do Bruxo mostra quantos espaços você tem e o nível deles. Você recupera todos os espaços gastos ao terminar um descanso curto ou longo. Toda magia que exija espaço é conjurada no nível dos seus espaços.',
         'Magias conhecidas: ao subir de nível, você pode trocar uma das magias conhecidas por outra da lista do Bruxo. Carisma é seu atributo de conjuração. Você pode usar um foco arcano como foco de conjuração.'
       ], mine:'<b>Vaelun:</b> 2 espaços de {slotLvl}º nível · CD <b>{dc}</b> · ataque <b>{spellAtk}</b> · 2 truques · 4 magias conhecidas. Como só tem 2 espaços, use Rajada Mística para o dia a dia e guarde os espaços para Escudo e Passo das Brumas.' },
-      { name:'Patrono Sobrenatural: Lâmina Maldita', sub:'Nível 1', desc:['Você fez um pacto com uma entidade misteriosa do Shadowfell — a força que se manifesta em armas sencientes como a Espada Negra. Sua lista de magias é expandida: 1º Escudo, Golpe Colérico; 2º Borrão, Golpe Marcante; 3º Piscar, Arma Elemental; 4º Assassino Fantasmagórico, Golpe Atordoante; 5º Golpe Banidor, Cone de Frio.'],
+      { name:'Patrono Sobrenatural: Lâmina Maldita', use:'passive', sub:'Nível 1', desc:['Você fez um pacto com uma entidade misteriosa do Shadowfell — a força que se manifesta em armas sencientes como a Espada Negra. Sua lista de magias é expandida: 1º Escudo, Golpe Colérico; 2º Borrão, Golpe Marcante; 3º Piscar, Arma Elemental; 4º Assassino Fantasmagórico, Golpe Atordoante; 5º Golpe Banidor, Cone de Frio.'],
         mine:"<b>Vaelun:</b> Escudo vem desta lista. Fonte: Xanathar's Guide to Everything." },
-      { name:'Maldição da Lâmina Maldita', sub:'Nível 1 · ação bônus · 1 uso por descanso curto', desc:[
+      { name:'Maldição da Lâmina Maldita', use:'bonus', sub:'Nível 1 · ação bônus · 1 uso por descanso curto', desc:[
         'Como uma ação bônus, escolha uma criatura que possa ver a até 9 m de você. O alvo fica amaldiçoado por 1 minuto. A maldição termina antes se o alvo morrer, se você morrer ou se você ficar incapacitado. Até a maldição acabar, você recebe os seguintes benefícios:',
         '• Você ganha um bônus nas jogadas de dano contra o alvo amaldiçoado igual ao seu bônus de proficiência.',
         '• Qualquer jogada de ataque sua contra o alvo amaldiçoado é um acerto crítico se o resultado do d20 for 19 ou 20.',
         '• Se o alvo amaldiçoado morrer, você recupera pontos de vida iguais ao seu nível de Bruxo + seu modificador de Carisma (mínimo 1).',
         'Você não pode usar esta característica de novo até terminar um descanso curto ou longo.'
       ], mine:'<b>Vaelun:</b> +{prof} de dano por acerto e crítico em 19–20; se o alvo morrer, recupera <b>{curseHeal}</b> PV. Rajada Mística contra amaldiçoado: {dmg_eb} + {prof}. Rapieira: {dmg_rap} + {prof}. Marque o uso na aba Combate.' },
-      { name:'Guerreiro Maldito', sub:'Nível 1', desc:[
+      { name:'Guerreiro Maldito', use:['passive','rest'], sub:'Nível 1', desc:[
         'Você adquire o treinamento necessário para se armar para a batalha: ganha proficiência com armaduras médias, escudos e armas marciais.',
         'A influência do seu patrono também permite canalizar misticamente sua vontade através de uma arma específica. Sempre que terminar um descanso longo, você pode tocar uma arma com a qual tenha proficiência e que não tenha a propriedade Duas Mãos. Ao atacar com essa arma, você pode usar seu modificador de Carisma, em vez de Força ou Destreza, nas jogadas de ataque e de dano. Esse benefício dura até você terminar um descanso longo. Se mais tarde ganhar o Pacto da Lâmina, o benefício se estende a toda arma de pacto que conjurar.'
       ], mine:'<b>Vaelun:</b> arma tocada = rapieira → <b>{atk_rap}</b> para acertar, <b>{dmg_rap}</b>. Uma segunda arma no meio do dia usaria Destreza ({dexS}). Pode vestir armadura média e escudo sem perder magia — veja a aba Mais.' },
-      { name:'Invocação: Explosão Agonizante', sub:'Nível 2 · pré-requisito: Rajada Mística', desc:['Quando você conjura Rajada Mística, some seu modificador de Carisma ao dano causado por cada raio que acertar.'],
+      { name:'Invocação: Explosão Agonizante', use:'passive', sub:'Nível 2 · pré-requisito: Rajada Mística', desc:['Quando você conjura Rajada Mística, some seu modificador de Carisma ao dano causado por cada raio que acertar.'],
         mine:'<b>Vaelun:</b> +{cha} por raio → {dmg_eb}.' },
-      { name:'Invocação: Voz do Mestre da Corrente', sub:'Nível 2 · pré-requisito: Pacto da Corrente', desc:['Você pode se comunicar telepaticamente com seu familiar e perceber através dos sentidos dele enquanto estiverem no mesmo plano de existência. Além disso, enquanto percebe através dos sentidos do familiar, você também pode falar através dele com sua própria voz, mesmo que o familiar normalmente seja incapaz de falar.'],
+      { name:'Invocação: Voz do Mestre da Corrente', use:['free','action'], sub:'Nível 2 · pré-requisito: Pacto da Corrente', desc:['Você pode se comunicar telepaticamente com seu familiar e perceber através dos sentidos dele enquanto estiverem no mesmo plano de existência. Além disso, enquanto percebe através dos sentidos do familiar, você também pode falar através dele com sua própria voz, mesmo que o familiar normalmente seja incapaz de falar.'],
         mine:'<b>Na prática:</b> o Diabrete vira um espião sem limite de distância. Invisível, ele entra num lugar; você vê, ouve e pode falar pela boca dele — inclusive na voz do alias da vez.' },
-      { name:'Dádiva do Pacto: Pacto da Corrente', sub:'Nível 3', desc:[
+      { name:'Dádiva do Pacto: Pacto da Corrente', use:['action','ritual'], sub:'Nível 3', desc:[
         'Você aprende a magia Achar Familiar e pode conjurá-la como um ritual. A magia não conta no seu número de magias conhecidas.',
         'Ao conjurar a magia, você pode escolher uma das formas normais para o familiar ou uma das seguintes formas especiais: diabrete, pseudodragão, quasit ou sprite.',
         'Além disso, quando você realiza a ação de Ataque, pode abrir mão de um dos seus próprios ataques para permitir que seu familiar faça um ataque com a reação dele.'
       ], mine:'<b>Vaelun:</b> Diabrete (Ferrão +5, 1d4+3 perfurante + 3d6 veneno, CD 11 Con para metade). Vale a pena ceder o ataque da rapieira ({dmg_rap}) quando o Diabrete pode picar — a média do veneno sozinha é 10.' },
-      { name:'Mente Desperta (telepatia 9 m)', sub:'Patrono Grande Antigo · nível 1', tag:'warn:Confirmar', desc:['Sua mente alienígena permite que você fale telepaticamente com qualquer criatura que possa ver a até 9 m de você. Você não precisa compartilhar um idioma com a criatura para ela entender suas mensagens telepáticas, mas ela precisa ser capaz de entender pelo menos um idioma.'],
-        mine:'<b>Atenção:</b> esta característica pertence ao patrono <b>Grande Antigo</b>, não à Lâmina Maldita. Um personagem só tem um patrono, então ela provavelmente é uma concessão do mestre (ou foi trocada por algo). Confirmar. Se ficar, é só de você para a criatura — ela não responde por telepatia.' },
     ]},
     { group:'Antecedente — Charlatão', src:"Player's Handbook", items:[
-      { name:'Identidade Falsa', sub:'Característica de antecedente', desc:['Você criou uma segunda identidade que inclui documentação, conhecidos estabelecidos e disfarces que permitem assumir essa persona. Além disso, você pode falsificar documentos, incluindo papéis oficiais e cartas pessoais, desde que já tenha visto um exemplo do tipo de documento ou da caligrafia que está tentando copiar.'],
+      { name:'Identidade Falsa', use:'social', sub:'Característica de antecedente', desc:['Você criou uma segunda identidade que inclui documentação, conhecidos estabelecidos e disfarces que permitem assumir essa persona. Além disso, você pode falsificar documentos, incluindo papéis oficiais e cartas pessoais, desde que já tenha visto um exemplo do tipo de documento ou da caligrafia que está tentando copiar.'],
         mine:'<b>Vaelun:</b> com Metamorfo, a "segunda identidade" pode ser literalmente outro rosto — e o Diabrete atende pelo nome do alias do momento. Falsificação usa as ferramentas de falsário (proficiência +{prof}).' },
-      { name:'Proficiências e equipamento', sub:'Antecedente', desc:['Perícias: Enganação, Prestidigitação. Ferramentas: kit de disfarce, ferramentas de falsário. Equipamento inicial: roupas finas, kit de disfarce, ferramentas do golpe (dez garrafas fechadas com líquido colorido, dados viciados, baralho marcado ou anel de sinete de um duque imaginário) e uma bolsa com 15 po.'] },
+      { name:'Proficiências e equipamento', use:'passive', sub:'Antecedente', desc:['Perícias: Enganação, Prestidigitação. Ferramentas: kit de disfarce, ferramentas de falsário. Equipamento inicial: roupas finas, kit de disfarce, ferramentas do golpe (dez garrafas fechadas com líquido colorido, dados viciados, baralho marcado ou anel de sinete de um duque imaginário) e uma bolsa com 15 po.'] },
     ]},
   ],
 };

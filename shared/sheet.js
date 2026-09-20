@@ -89,22 +89,52 @@ function migrate(p){
   return p;
 }
 const ph = s => String(s).replace(/\{([a-zA-Z0-9_]+)\}/g, (_,k)=>`<span data-v="${k}"></span>`);
+const USE = { action:'Ação', bonus:'Ação bônus', reaction:'Reação', free:'Sem ação', passive:'Passiva', ritual:'Ritual', rest:'Descanso', social:'Fora de combate' };
+const USE_ORDER = ['action','bonus','reaction','free','ritual','rest','social','passive'];
+const USE_HINT = {
+  action:'Gasta a sua ação do turno. Só uma por turno.',
+  bonus:'Gasta a ação bônus. Só uma por turno, e só se algo conceder.',
+  reaction:'Gasta a reação (uma por rodada), fora do seu turno ou dentro dele.',
+  free:'Não gasta ação: acontece junto com outra coisa ou é comunicação.',
+  ritual:'Fora de combate: leva 10 minutos a mais e não gasta espaço de magia.',
+  rest:'Acontece durante ou no fim de um descanso.',
+  social:'Uso narrativo, fora do combate.',
+  passive:'Sempre ativa — já está somada nos números da ficha ou vale o tempo todo.',
+};
+const useList = u => (Array.isArray(u) ? u : [u]).filter(Boolean);
+const useTags = u => useList(u).map(k=>`<span class="tag use u-${k}">${USE[k]||k}</span>`).join('');
+function inferSpellUse(sp){
+  if(sp.use) return useList(sp.use);
+  const t = (sp.time||'').toLowerCase(), sub = (sp.sub||'').toLowerCase(); const out = [];
+  if(t.includes('ação bônus')) out.push('bonus'); else if(t.includes('reação')) out.push('reaction'); else out.push('action');
+  if(sub.includes('ritual')) out.push('ritual');
+  return out;
+}
 function tagHtml(t){
   if(!t) return '';
   const [cls, txt] = t.includes(':') ? t.split(':') : ['', t];
   return `<span class="tag ${cls}">${txt}</span>`;
 }
-function card(title, sub, body, tag){
-  return `<details class="card"><summary><span><span class="t">${title}${tagHtml(tag)}</span>${sub?`<span class="s">${ph(sub)}</span>`:''}</span></summary><div class="card-body">${body}</div></details>`;
+function card(title, sub, body, tag, id, use){
+  return `<details class="card"${id?` id="${id}"`:''}><summary><span><span class="t">${title}${useTags(use)}${tagHtml(tag)}</span>${sub?`<span class="s">${ph(sub)}</span>`:''}</span></summary><div class="card-body">${body}</div></details>`;
 }
 function spellCard(sp){
   const body = `<dl class="stats"><dt>Tempo</dt><dd>${sp.time}</dd><dt>Alcance</dt><dd>${sp.range}</dd><dt>Componentes</dt><dd>${sp.comp}</dd><dt>Duração</dt><dd>${sp.dur}</dd></dl>`
     + sp.desc.map(p=>'<p>'+ph(p)+'</p>').join('')
     + (sp.mine ? '<div class="mine">'+ph(sp.mine)+'</div>' : '');
-  return card(sp.name, sp.sub, body, sp.tag);
+  return card(sp.name, sp.sub, body, sp.tag, 's-'+slug(sp.name), inferSpellUse(sp));
 }
 function featCard(f){
-  return card(f.name, f.sub, f.desc.map(p=>'<p>'+ph(p)+'</p>').join('') + (f.mine ? '<div class="mine">'+ph(f.mine)+'</div>' : ''), f.tag);
+  return card(f.name, f.sub, f.desc.map(p=>'<p>'+ph(p)+'</p>').join('') + (f.mine ? '<div class="mine">'+ph(f.mine)+'</div>' : ''), f.tag, 'f-'+slug(f.name), f.use);
+}
+// Índice "como usar": agrupa características e magias por tipo de uso, com atalho para o card.
+function useIndex(){
+  const entries = [];
+  (C.features||[]).forEach(g=>g.items.forEach(f=>useList(f.use).forEach(k=>entries.push({k, name:f.name, id:'f-'+slug(f.name), tab:'tracos'}))));
+  (C.spells||[]).forEach(sp=>inferSpellUse(sp).forEach(k=>entries.push({k, name:sp.name, id:'s-'+slug(sp.name), tab:'magias', spell:true})));
+  const groups = USE_ORDER.filter(k=>entries.some(e=>e.k===k));
+  if(!groups.length) return '';
+  return `<div class="box"><h2>Como usar</h2><p class="small-note">Toque num nome para abrir a descrição. Magias aparecem em itálico.</p>${groups.map(k=>`<h3>${USE[k]}</h3><p class="small-note" style="margin:0 0 4px;">${USE_HINT[k]}</p><div class="chips">${entries.filter(e=>e.k===k).map(e=>`<button type="button" class="chip${e.spell?' spell':''}" data-jump="${e.id}" data-tab="${e.tab}">${e.name}</button>`).join('')}</div>`).join('')}</div>`;
 }
 function track(label, sub, pipsId){
   return `<div class="track"><span class="lbl">${ph(label)}${sub?`<small>${ph(sub)}</small>`:''}</span><span class="pips" id="${pipsId}"></span></div>`;
@@ -164,7 +194,7 @@ function build(){
     <h2>Ataques</h2>
     <table class="attack-table"><thead><tr><th>Nome</th><th>Bônus</th><th>Dano / Tipo</th><th>Alcance</th></tr></thead><tbody>${ph(attackRows)}</tbody></table>
     ${C.attackNote ? '<p class="small-note">'+ph(C.attackNote)+'</p>' : ''}
-    ${(C.attackCards||[]).map(k=>card(k.title, k.sub, ph(k.body))).join('')}
+    ${(C.attackCards||[]).map(k=>card(k.title, k.sub, ph(k.body), null, null, k.use||'action')).join('')}
   </div>
   ${C.companion ? `<div class="box">
     <h2>${C.companion.title}</h2>
@@ -219,6 +249,7 @@ function build(){
 </section>
 
 <section class="tab" id="tab-tracos" data-title="Traços">
+  ${useIndex()}
   ${(C.features||[]).map(g=>`<div class="box"><h2>${g.group}</h2>${g.src?'<p class="meta-line">'+ph(g.src)+'</p>':''}${g.items.map(featCard).join('')}</div>`).join('')}
 </section>
 
@@ -478,6 +509,10 @@ function bind(){
   $('fileInput').addEventListener('change', e=>{ const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = ev=>load(ev.target.result); r.readAsText(f); e.target.value=''; });
   $('top').onclick = ()=>window.scrollTo({top:0,behavior:'smooth'});
   document.querySelectorAll('.tabbar button').forEach(b=>b.addEventListener('click', ()=>setTab(b.dataset.tab, true)));
+  document.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click', ()=>{
+    const el = $(b.dataset.jump); if(!el) return;
+    setTab(b.dataset.tab, false); el.open = true; el.scrollIntoView({block:'start', behavior:'smooth'});
+  }));
   window.addEventListener('scroll', ()=>{ $('top').classList.toggle('show', window.scrollY>500); }, {passive:true});
   window.addEventListener('pagehide', ()=>{ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }catch(e){} });
 }
