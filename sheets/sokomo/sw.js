@@ -1,7 +1,7 @@
 // Service worker: guarda uma cópia da ficha para funcionar sem internet.
 // Estratégia "rede primeiro": sempre tenta baixar a versão nova; se estiver
 // offline, usa a cópia guardada.
-const CACHE = 'vaelun-v3';
+const CACHE = 'sokomo-v3';
 const FILES = ['./', './index.html', './char.js', './manifest.webmanifest', './icon.svg', '../../shared/sheet.css', '../../shared/sheet.js'];
 
 self.addEventListener('install', e => {
