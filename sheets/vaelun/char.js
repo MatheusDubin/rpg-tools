@@ -19,7 +19,7 @@ window.CHAR = {
     ['Ferramentas','Kit de disfarce, ferramentas de falsário'],
     ['Idiomas','Comum, Infernal, Silvestre'],
   ],
-  proficienciesNote:'Armadura média limita o bônus de Destreza a +2; brunea e meia armadura dão desvantagem em Furtividade. Sem proficiência na armadura vestida, não se conjura magias. Escudo ocupa uma mão: Rajada Mística e Escudo (magia) têm componente somático, então com rapieira e escudo nas mãos é preciso guardar ou soltar algo antes de conjurar (uma interação gratuita por turno) — combinar com o mestre.',
+  proficienciesNote:'Armadura média limita o bônus de Destreza a +2; brunea e meia armadura dão desvantagem em Furtividade. Sem proficiência na armadura vestida, não se conjura magias. <b>Acordo com o mestre:</b> a rapieira é o foco arcano de Vaelun e as magias são conjuradas através dela, com o escudo na outra mão — sem precisar de mão livre.',
   armorDefault:'scale', shieldDefault:true,
   coins:{gp:'15'},
   items:'Brunea (50 po), escudo (10 po), rapieira (25 po) — comprados com o ouro inicial (4d4 × 10 po); kit de disfarce, ferramentas de falsário, componentes arcanos, mochila, corda (15m), roupas comuns.',
@@ -31,7 +31,7 @@ window.CHAR = {
   spellcasting:{
     title:'Conjuração — Pacto', ability:'cha', slots:[0,2], slotRecharge:'short',
     slotNote:'todos de {slotLvl}º nível · recupera em descanso curto',
-    note:'Truques conhecidos: 2 · Magias conhecidas: 4 (pode trocar 1 ao subir de nível). Toda magia com espaço é conjurada no {slotLvl}º nível. Foco arcano substitui componentes materiais sem custo.'
+    note:'Truques conhecidos: 2 · Magias conhecidas: 4 (pode trocar 1 ao subir de nível). Toda magia com espaço é conjurada no {slotLvl}º nível. Foco arcano: a rapieira (acordo com o mestre) — substitui componentes materiais sem custo e permite conjurar com o escudo na outra mão.'
   },
   resources:[
     {id:'curse', name:'Maldição da Lâmina Maldita', sub:'ação bônus · 1 uso · descanso curto', total:1, recharge:'short'},
@@ -59,7 +59,7 @@ window.CHAR = {
       <p><b>Jogada de ataque:</b> 1d20 + {prof} + {cha} = <b>1d20 {atk_eb}</b>. Com {beams} raio(s) no nível {level}; cada raio tem sua própria jogada e pode ir a alvos diferentes.</p>
       <p><b>Dano:</b> 1d10 força + {cha} por raio (Explosão Agonizante) = <b>{dmg_eb}</b>. Crítico: 2d10 {chaS}.</p>
       <p><b>Desvantagem em corpo a corpo:</b> é um ataque à distância — se houver uma criatura hostil a 1,5 m de você que possa vê-lo e não esteja incapacitada, a jogada tem desvantagem. Nesse caso use a rapieira ou Desengaje/Passo das Brumas primeiro.</p>
-      <p><b>Não gasta espaço de magia.</b> Componentes V, S: precisa poder falar e ter uma mão livre.</p>` },
+      <p><b>Não gasta espaço de magia.</b> Componentes V, S: precisa poder falar. Pelo acordo com o mestre, a rapieira serve de foco e os gestos são feitos com ela em mãos, mesmo com o escudo.</p>` },
   ],
 
   companion:{
