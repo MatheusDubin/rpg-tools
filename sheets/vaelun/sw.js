@@ -1,7 +1,7 @@
 // Service worker: guarda uma cópia da ficha para funcionar sem internet.
 // Estratégia "rede primeiro": sempre tenta baixar a versão nova; se estiver
 // offline, usa a cópia guardada.
-const CACHE = 'vaelun-v1';
+const CACHE = 'vaelun-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
