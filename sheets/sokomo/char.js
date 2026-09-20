@@ -85,7 +85,7 @@ window.CHAR = {
     {id:'l2', title:'2º nível', note:'2 espaços de 2º nível.'},
   ],
   spells:[
-    { list:'c', name:'Amizade', sub:'Truque · Encantamento · Concentração', time:'1 ação', range:'Pessoal', comp:'S, M (um pouco de maquiagem aplicada ao rosto ao conjurar)', dur:'Concentração, até 1 minuto',
+    { list:'c', name:'Amizade', use:['action','social'], sub:'Truque · Encantamento · Concentração', time:'1 ação', range:'Pessoal', comp:'S, M (um pouco de maquiagem aplicada ao rosto ao conjurar)', dur:'Concentração, até 1 minuto',
       desc:[
         'Pela duração, você tem vantagem em todos os testes de Carisma dirigidos a uma criatura à sua escolha que não seja hostil a você. Quando a magia termina, a criatura percebe que você usou magia para influenciar seu humor e fica hostil a você. Uma criatura propensa à violência pode atacá-lo. Outra criatura pode buscar retaliação de outras formas (a critério do mestre), dependendo da natureza da interação com ela.'
       ],
@@ -144,37 +144,37 @@ window.CHAR = {
 
   features:[
     { group:'Raça — Humano', src:"Player's Handbook", items:[
-      { name:'Aumento de atributo', sub:'Passivo', desc:['Todos os seus valores de atributo aumentam em 1.'], mine:'<b>Já aplicado</b> nos valores da aba Atributos.' },
-      { name:'Idade, tamanho, deslocamento e idiomas', sub:'Passivo', desc:['Humanos atingem a maturidade no fim da adolescência e vivem menos de um século. São Médios, com 1,5 m a mais de 1,8 m de altura. Deslocamento base de 9 m. Falam, leem e escrevem Comum e um idioma extra à escolha.'], mine:'<b>Idioma extra:</b> Élfico. Sem visão no escuro.' },
+      { name:'Aumento de atributo', use:'passive', sub:'Passivo', desc:['Todos os seus valores de atributo aumentam em 1.'], mine:'<b>Já aplicado</b> nos valores da aba Atributos.' },
+      { name:'Idade, tamanho, deslocamento e idiomas', use:'passive', sub:'Passivo', desc:['Humanos atingem a maturidade no fim da adolescência e vivem menos de um século. São Médios, com 1,5 m a mais de 1,8 m de altura. Deslocamento base de 9 m. Falam, leem e escrevem Comum e um idioma extra à escolha.'], mine:'<b>Idioma extra:</b> Élfico. Sem visão no escuro.' },
     ]},
     { group:'Classe — Bardo', src:"Player's Handbook · nível {level}", items:[
-      { name:'Conjuração', sub:'Nível 1', desc:[
+      { name:'Conjuração', use:'passive', sub:'Nível 1', desc:[
         'Você aprendeu a desembaraçar e remodelar o tecido da realidade em harmonia com seus desejos e sua música. Suas magias fazem parte do seu vasto repertório, uma magia que você pode ajustar a diferentes situações.',
         'Truques: você conhece dois truques da lista do Bardo (mais um no 4º e no 10º nível). Espaços de magia: a tabela do Bardo mostra quantos espaços você tem para conjurar magias de 1º nível ou superior. Você recupera todos os espaços gastos ao terminar um descanso longo.',
         'Magias conhecidas: você conhece magias da lista do Bardo de nível igual ou inferior aos seus espaços (6 no 3º nível). Ao subir de nível, pode trocar uma magia conhecida por outra. Carisma é seu atributo de conjuração. Conjuração em ritual: você pode conjurar qualquer magia conhecida que tenha a marca ritual como ritual. Foco: um instrumento musical.'
       ], mine:'<b>Sokomo:</b> CD <b>{dc}</b> · ataque <b>{spellAtk}</b> · 4 espaços de 1º e 2 de 2º · 2 truques · 6 magias. Ritual: Detectar Magia. Todas as suas magias com teste pedem <b>Sabedoria</b>, exceto Zona da Verdade (Carisma).' },
-      { name:'Inspiração de Bardo', sub:'Nível 1 · ação bônus · {inspDie}', desc:[
+      { name:'Inspiração de Bardo', use:'bonus', sub:'Nível 1 · ação bônus · {inspDie}', desc:[
         'Você pode inspirar os outros com palavras ou música. Para isso, use uma ação bônus no seu turno para escolher uma criatura que não seja você a até 18 m e que possa ouvi-lo. Essa criatura ganha um dado de Inspiração de Bardo, um d6.',
         'Uma vez nos próximos 10 minutos, a criatura pode rolar o dado e somar o resultado a um teste de atributo, jogada de ataque ou teste de resistência que fizer. Ela pode esperar até depois de rolar o d20 para decidir usar o dado, mas deve decidir antes de o mestre dizer se a jogada teve sucesso ou falha. Depois de rolado, o dado é perdido. Uma criatura só pode ter um dado de Inspiração de Bardo de cada vez.',
         'Você pode usar esta característica um número de vezes igual ao seu modificador de Carisma (mínimo 1). Recupera os usos ao terminar um descanso longo. O dado muda quando você atinge certos níveis: d8 no 5º, d10 no 10º, d12 no 15º.'
       ], mine:'<b>Sokomo:</b> <b>{inspUses}</b> usos por descanso longo, marcados na aba Combate. Dê no início do combate a quem vai fazer a jogada mais importante; o dado vale 10 minutos, então pode ser dado antes de uma negociação também.' },
-      { name:'Versatilidade', sub:'Nível 2 · passivo', desc:['Você pode somar metade do seu bônus de proficiência, arredondada para baixo, a qualquer teste de atributo que faça que ainda não inclua seu bônus de proficiência.'],
+      { name:'Versatilidade', use:'passive', sub:'Nível 2 · passivo', desc:['Você pode somar metade do seu bônus de proficiência, arredondada para baixo, a qualquer teste de atributo que faça que ainda não inclua seu bônus de proficiência.'],
         mine:'<b>Sokomo:</b> +{half} em toda perícia sem proficiência (já somado na lista), em <b>Iniciativa</b> ({ini}) e em ferramentas sem proficiência. Não vale para ataques nem testes de resistência.' },
-      { name:'Canção do Descanso', sub:'Nível 2 · {restDie}', desc:['Você pode usar música ou oratória tranquilizadora para ajudar seus aliados feridos a se recuperarem durante um descanso curto. Se você ou qualquer criatura amigável que possa ouvir sua apresentação recuperar pontos de vida ao gastar dados de vida no fim do descanso curto, cada uma dessas criaturas recupera 1d6 pontos de vida extras. O dado muda para d8 no 9º nível, d10 no 13º e d12 no 17º.'],
+      { name:'Canção do Descanso', use:'rest', sub:'Nível 2 · {restDie}', desc:['Você pode usar música ou oratória tranquilizadora para ajudar seus aliados feridos a se recuperarem durante um descanso curto. Se você ou qualquer criatura amigável que possa ouvir sua apresentação recuperar pontos de vida ao gastar dados de vida no fim do descanso curto, cada uma dessas criaturas recupera 1d6 pontos de vida extras. O dado muda para d8 no 9º nível, d10 no 13º e d12 no 17º.'],
         mine:'<b>Sokomo:</b> só quem <b>gastar</b> pelo menos um dado de vida ganha o extra, e é uma vez por descanso, não por dado.' },
-      { name:'Aptidão', sub:'Nível 3 · passivo', desc:['Escolha duas das suas perícias com proficiência. Seu bônus de proficiência é dobrado em qualquer teste de atributo que use uma dessas perícias. No 10º nível, você escolhe mais duas.'],
+      { name:'Aptidão', use:'passive', sub:'Nível 3 · passivo', desc:['Escolha duas das suas perícias com proficiência. Seu bônus de proficiência é dobrado em qualquer teste de atributo que use uma dessas perícias. No 10º nível, você escolhe mais duas.'],
         mine:'<b>Sokomo:</b> Persuasão <b>{sk_persuasao}</b> e Prestidigitação <b>{sk_prestidigitacao}</b> (Destreza + 2 × proficiência).' },
-      { name:'Colégio do Conhecimento: Proficiências Bônus', sub:'Nível 3', desc:['Ao entrar no Colégio do Conhecimento no 3º nível, você ganha proficiência em três perícias à sua escolha.'],
+      { name:'Colégio do Conhecimento: Proficiências Bônus', use:'passive', sub:'Nível 3', desc:['Ao entrar no Colégio do Conhecimento no 3º nível, você ganha proficiência em três perícias à sua escolha.'],
         mine:'<b>Sokomo:</b> as três que faltavam entre as oito da ficha (provavelmente Arcanismo, Percepção e Religião — a divisão exata não muda nenhum número).' },
-      { name:'Colégio do Conhecimento: Palavras de Interrupção', sub:'Nível 3 · reação', desc:[
+      { name:'Colégio do Conhecimento: Palavras de Interrupção', use:'reaction', sub:'Nível 3 · reação', desc:[
         'Você aprende a usar sua sagacidade para distrair, confundir e minar a confiança e a competência dos outros. Quando uma criatura que você possa ver a até 18 m de você faz uma jogada de ataque, um teste de atributo ou uma jogada de dano, você pode usar sua reação para gastar um dos seus usos de Inspiração de Bardo, rolando o dado e subtraindo o resultado da jogada da criatura.',
         'Você pode escolher usar esta característica depois que a criatura rolar, mas antes de o mestre determinar se a jogada de ataque ou o teste de atributo teve sucesso ou falha, ou antes de a criatura causar o dano. A criatura é imune se não puder ouvi-lo ou se for imune a ser enfeitiçada.'
       ], mine:'<b>Sokomo:</b> −{inspDie} num ataque que acertou por pouco um aliado, ou no dano de um crítico. Usa os mesmos {inspUses} usos da Inspiração — decida se prefere inspirar ou interromper. Gasta a reação, então nada de ataque de oportunidade na mesma rodada.' },
     ]},
     { group:'Antecedente — Nobre', src:"Player's Handbook", items:[
-      { name:'Posição de Privilégio', sub:'Característica de antecedente', desc:['Graças ao seu nascimento nobre, as pessoas tendem a pensar o melhor de você. Você é bem-vindo na alta sociedade, e as pessoas presumem que você tem o direito de estar onde está. O povo comum faz todo o esforço para acomodá-lo e evitar seu desagrado, e outras pessoas de nascimento nobre o tratam como membro da mesma esfera social. Você pode conseguir uma audiência com um nobre local, se precisar.'],
+      { name:'Posição de Privilégio', use:'social', sub:'Característica de antecedente', desc:['Graças ao seu nascimento nobre, as pessoas tendem a pensar o melhor de você. Você é bem-vindo na alta sociedade, e as pessoas presumem que você tem o direito de estar onde está. O povo comum faz todo o esforço para acomodá-lo e evitar seu desagrado, e outras pessoas de nascimento nobre o tratam como membro da mesma esfera social. Você pode conseguir uma audiência com um nobre local, se precisar.'],
         mine:'<b>Sokomo:</b> anel de sinete e pergaminho de linhagem são a prova. Combine com Persuasão {sk_persuasao} e Sugestão para abrir portas sem sacar a adaga.' },
-      { name:'Proficiências e equipamento', sub:'Antecedente', desc:['Perícias: História, Persuasão. Ferramentas: um tipo de jogo. Idiomas: um à sua escolha. Equipamento inicial: roupas finas, um anel de sinete, um pergaminho de linhagem e uma bolsa com 25 po.'],
+      { name:'Proficiências e equipamento', use:'passive', sub:'Antecedente', desc:['Perícias: História, Persuasão. Ferramentas: um tipo de jogo. Idiomas: um à sua escolha. Equipamento inicial: roupas finas, um anel de sinete, um pergaminho de linhagem e uma bolsa com 25 po.'],
         mine:'<b>Sokomo:</b> idioma extra Halfling. Registre na aba Mais qual jogo e quais três instrumentos.' },
     ]},
   ],
