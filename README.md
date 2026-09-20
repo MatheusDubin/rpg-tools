@@ -6,7 +6,8 @@ Fichas de personagem interativas em HTML puro, feitas para usar no celular duran
 
 | Personagem | Arquivo | Link (GitHub Pages) |
 |---|---|---|
-| Vaelun — Changeling, Bruxo (Lâmina Maldita) nível 3 | `sheets/vaelun/index.html` | https://matheusdubin.github.io/rpg-tools/sheets/vaelun/ |
+| Vaelun — Changeling, Bruxo (Lâmina Maldita) nível 3 | `sheets/vaelun/` | https://matheusdubin.github.io/rpg-tools/sheets/vaelun/ |
+| Sokomo Kudiome — Humano, Bardo (Colégio do Conhecimento) nível 3 | `sheets/sokomo/` | https://matheusdubin.github.io/rpg-tools/sheets/sokomo/ |
 
 ## Como usar no iPhone
 
@@ -35,9 +36,24 @@ python3 -m http.server 8000
 # abra http://localhost:8000/sheets/vaelun/
 ```
 
-A ficha é dividida em abas (Combate, Magias, Atributos, Traços, Mais). Os textos de magias e
-características ficam nos arrays `SPELLS` e `FEATURES` dentro do `index.html`; chaves entre
-chaves como `{dc}` são trocadas pelos números calculados da ficha.
+O motor da ficha é compartilhado: `shared/sheet.js` monta a página inteira (abas Combate,
+Magias, Atributos, Traços, Mais; cálculos; pips; salvamento; descansos) a partir do objeto
+`window.CHAR` definido em `sheets/<nome>/char.js`. `shared/sheet.css` tem o visual.
 
-Cada ficha fica em `sheets/<nome>/` com `index.html`, `manifest.webmanifest` (ícone na tela de
-início), `sw.js` (cache para uso offline) e `icon.svg`.
+Cada ficha fica em `sheets/<nome>/` com `index.html` (só carrega os scripts), `char.js` (os
+dados do personagem), `manifest.webmanifest` (ícone na tela de início), `sw.js` (cache para
+uso offline) e `icon.svg`.
+
+### Criar uma ficha nova
+
+1. Copie a pasta `sheets/sokomo/` para `sheets/<nome>/`.
+2. Edite `char.js`: `id`, `name`, `subtitle`, `level`, `scores`, `saves`, `skills`, `spellcasting`
+   (`slots` é um array por nível: `[4,2]` = 4 de 1º e 2 de 2º; `slotRecharge` é `long` ou
+   `short`), `resources` (contadores com pips), `attacks`, `spells`, `features` etc.
+3. Nos textos, chaves entre chaves viram números calculados: `{dc}`, `{spellAtk}`, `{prof}`,
+   `{level}`, `{cha}`/`{chaS}` (modificador sem/com sinal), `{sk_persuasao}` (perícia, nome sem
+   acento), `{atk_ID}`/`{dmg_ID}` (ataque com aquele `id`), `{ac}`, `{ini}` e o que `extraVars`
+   devolver.
+4. Troque o título e o `short_name` em `index.html` e `manifest.webmanifest`, a letra em
+   `icon.svg` e o nome do cache em `sw.js`.
+5. Adicione o link em `index.html` da raiz.
