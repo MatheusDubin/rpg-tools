@@ -35,5 +35,9 @@ python3 -m http.server 8000
 # abra http://localhost:8000/sheets/vaelun/
 ```
 
+A ficha é dividida em abas (Combate, Magias, Atributos, Traços, Mais). Os textos de magias e
+características ficam nos arrays `SPELLS` e `FEATURES` dentro do `index.html`; chaves entre
+chaves como `{dc}` são trocadas pelos números calculados da ficha.
+
 Cada ficha fica em `sheets/<nome>/` com `index.html`, `manifest.webmanifest` (ícone na tela de
 início), `sw.js` (cache para uso offline) e `icon.svg`.

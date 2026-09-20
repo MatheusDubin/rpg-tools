@@ -20,6 +20,7 @@
   --line:#c9b78f; --accent:#7a1f1f; --accent2:#3d5a3d; --pip-off:#e3d5b8;
   --btn:#e9dcbd; --focus:#b0853a;
   --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+  --tabbar:56px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -36,13 +37,14 @@
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 html{-webkit-text-size-adjust:100%;}
 body{
-  margin:0; padding:0 16px calc(24px + var(--safe-bottom)); background:var(--bg); color:var(--ink);
+  margin:0; padding:0 16px calc(var(--tabbar) + 24px + var(--safe-bottom)); background:var(--bg); color:var(--ink);
   font-family:'Georgia','Times New Roman',serif; font-size:16px; line-height:1.35;
   overflow-x:hidden; touch-action:manipulation;
 }
 main{max-width:720px; margin:0 auto;}
 h1{font-size:1.25em; margin:0; line-height:1.15;}
 h2{font-size:.95em; margin:0 0 8px; border-bottom:2px solid var(--accent); padding-bottom:3px; text-transform:uppercase; letter-spacing:.5px;}
+h3{font-size:.85em; margin:10px 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
 p{margin:.35em 0;}
 .box{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:0 0 10px;}
 .header{
@@ -105,25 +107,58 @@ th{background:var(--line); font-size:.7em; text-transform:uppercase;}
 textarea{min-height:80px; resize:vertical; line-height:1.4;}
 .hp-row{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px;}
 .hp-row input{text-align:center; font-weight:bold; font-size:1.2em;}
-.hp-adjust{display:grid; grid-template-columns:44px 1fr 44px 44px; gap:6px; margin-top:8px; align-items:center;}
+.hp-adjust{display:grid; grid-template-columns:44px 1fr 44px; gap:6px; margin-top:8px; align-items:center;}
 .hp-adjust input{text-align:center;}
+/* Abas */
+.tab{display:none;}
+.tab.active{display:block;}
+.tabbar{position:fixed; left:0; right:0; bottom:0; z-index:35; display:flex; justify-content:center; background:var(--panel); border-top:1px solid var(--line); padding-bottom:var(--safe-bottom);}
+.tabbar-inner{display:flex; width:100%; max-width:720px;}
+.tabbar button{flex:1; border:none; border-radius:0; background:transparent; min-height:var(--tabbar); font-size:.78em; color:var(--muted); padding:4px 2px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;}
+.tabbar button .ico{font-size:1.25em; line-height:1;}
+.tabbar button.active{color:var(--accent); font-weight:bold; box-shadow:inset 0 3px 0 var(--accent);}
+/* Cards expansíveis */
+details.card{border:1px solid var(--line); border-radius:8px; margin:0 0 8px; background:var(--bg);}
+details.card summary{list-style:none; cursor:pointer; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; gap:8px; min-height:44px;}
+details.card summary::-webkit-details-marker{display:none;}
+details.card summary::after{content:"›"; color:var(--muted); font-size:1.3em; transform:rotate(90deg); transition:transform .15s; flex-shrink:0;}
+details.card[open] summary::after{transform:rotate(-90deg);}
+details.card summary .t{font-weight:bold;}
+details.card summary .s{display:block; font-size:.78em; color:var(--muted); font-weight:normal;}
+.card-body{padding:0 12px 12px; font-size:.95em; border-top:1px dotted var(--line); padding-top:8px;}
+.card-body p{margin:.45em 0;}
+.tag{display:inline-block; font-size:.68em; padding:1px 7px; border-radius:10px; border:1px solid var(--line); color:var(--muted); margin-left:4px; text-transform:uppercase; vertical-align:middle; white-space:nowrap;}
+.tag.warn{border-color:var(--accent); color:var(--accent);}
+.tag.ok{border-color:var(--accent2); color:var(--accent2);}
+.meta-line{font-size:.85em; color:var(--muted); margin:0 0 6px;}
+.mine{border-left:3px solid var(--accent); padding:4px 0 4px 10px; font-size:.92em; margin-top:8px; background:var(--panel); border-radius:0 6px 6px 0;}
+.mine b:first-child{color:var(--accent);}
+dl.stats{display:grid; grid-template-columns:auto 1fr; gap:3px 10px; font-size:.9em; margin:6px 0;}
+dl.stats dt{color:var(--muted);} dl.stats dd{margin:0;}
+.statline{display:grid; grid-template-columns:repeat(6,1fr); gap:4px; text-align:center; font-size:.85em; margin:6px 0;}
+.statline div{border:1px solid var(--line); border-radius:6px; padding:3px 0;}
+.statline b{display:block; font-size:.8em; color:var(--muted);}
 .modal{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:flex-end; justify-content:center; z-index:50; padding:0;}
 .modal.show{display:flex;}
 .modal-inner{background:var(--panel); border:1px solid var(--line); border-radius:12px 12px 0 0; padding:12px 16px calc(16px + var(--safe-bottom)); width:100%; max-width:720px; max-height:88vh; overflow:auto;}
 @media (min-width:560px){ .modal{align-items:center; padding:16px;} .modal-inner{border-radius:12px;} }
 .modal-inner textarea{min-height:140px; font-family:ui-monospace,Menlo,monospace; font-size:.8em;}
-#toast{position:fixed; left:50%; bottom:calc(20px + var(--safe-bottom)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:8px 14px; border-radius:20px; font-size:.85em; opacity:0; pointer-events:none; transition:opacity .2s; z-index:60; white-space:nowrap;}
+#toast{position:fixed; left:50%; bottom:calc(var(--tabbar) + 14px + var(--safe-bottom)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:8px 14px; border-radius:20px; font-size:.85em; opacity:0; pointer-events:none; transition:opacity .2s; z-index:60; white-space:nowrap;}
 #toast.show{opacity:.95;}
-#top{position:fixed; bottom:calc(16px + var(--safe-bottom)); right:16px; width:44px; height:44px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.2em; opacity:0; pointer-events:none; transition:opacity .2s; z-index:40;}
+#top{position:fixed; bottom:calc(var(--tabbar) + 12px + var(--safe-bottom)); right:16px; width:44px; height:44px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.2em; opacity:0; pointer-events:none; transition:opacity .2s; z-index:40;}
 #top.show{opacity:.9; pointer-events:auto;}
 .small-note{font-size:.8em; color:var(--muted);}
-ul{margin:0; padding-left:20px;}
-li{margin:2px 0;}
+ul{margin:.3em 0; padding-left:20px;}
+li{margin:3px 0;}
 .saved{font-size:.7em; color:var(--muted);}
 @media print{
   body{background:#fff; color:#000; font-size:10px; padding:0;}
   .header{position:static; border:none; margin:0 0 6px; padding:0;}
-  .no-print{display:none !important;}
+  .no-print, .tabbar{display:none !important;}
+  .tab{display:block !important;}
+  .tab::before{content:attr(data-title); display:block; font-size:1.3em; font-weight:bold; margin:10px 0 6px; border-bottom:2px solid #000;}
+  details.card{break-inside:avoid;} details.card summary::after{display:none;}
+  details.card:not([open]) > .card-body{display:block;}
   .box{break-inside:avoid; border:1px solid #999; margin-bottom:6px; padding:6px 8px;}
   .pip{width:16px; height:16px;} .pip::before{width:12px; height:12px;}
   input, textarea, select{min-height:0; padding:2px 4px; border-color:#bbb;}
@@ -140,7 +175,7 @@ li{margin:2px 0;}
 <header class="header">
   <div>
     <h1>Vaelun</h1>
-    <div class="meta">Changeling · Bruxo (Lâmina Maldita) · Nível 3 · Charlatão</div>
+    <div class="meta">Changeling · Bruxo (Lâmina Maldita) · Nível <span data-v="level"></span> · Charlatão</div>
   </div>
   <div class="toolbar no-print">
     <button class="small" type="button" onclick="toggleTheme()" aria-label="Alternar tema">Tema</button>
@@ -148,16 +183,20 @@ li{margin:2px 0;}
   </div>
 </header>
 
-<section class="box">
+<!-- ============ COMBATE ============ -->
+<section class="tab" id="tab-combate" data-title="Combate">
+
+<div class="box">
   <div class="grid g4">
     <div class="stat"><div class="v" id="ac">--</div><div class="l">CA</div></div>
     <div class="stat"><div class="v" id="ini">--</div><div class="l">Iniciativa</div></div>
     <div class="stat"><div class="v">9m</div><div class="l">Desloc.</div></div>
-    <div class="stat"><div class="v">+2</div><div class="l">Prof.</div></div>
+    <div class="stat"><div class="v" data-v="profS"></div><div class="l">Prof.</div></div>
   </div>
-</section>
+  <p class="small-note" id="acNote" style="margin:6px 0 0;"></p>
+</div>
 
-<section class="box">
+<div class="box">
   <h2>Pontos de Vida</h2>
   <div class="hp-row">
     <div><label for="hpCur">Atual</label><input type="text" inputmode="numeric" id="hpCur" placeholder="—"></div>
@@ -168,30 +207,29 @@ li{margin:2px 0;}
     <button class="icon" type="button" onclick="adjustHp(-1)" aria-label="Aplicar dano">−</button>
     <input type="text" inputmode="numeric" id="hpAmt" value="1" aria-label="Quantidade">
     <button class="icon" type="button" onclick="adjustHp(1)" aria-label="Aplicar cura">+</button>
-    <button class="icon" type="button" onclick="setHpAmt(1)" aria-label="Zerar quantidade" title="Voltar para 1">1</button>
   </div>
-  <p class="small-note">Dano consome PV temporários primeiro. Máximo em aberto — rolagem física dos dados de vida.</p>
-</section>
+  <p class="small-note">Dano consome PV temporários primeiro. Bruxo: d8 por nível (1º nível = 8 + Con; depois 1d8 + Con ou 5 + Con por nível). PV temporários não se somam — fica o maior.</p>
+</div>
 
-<section class="box no-print">
+<div class="box no-print">
   <div class="grid g2">
     <button type="button" onclick="shortRest()">Descanso Curto</button>
     <button type="button" onclick="longRest()">Descanso Longo</button>
   </div>
-</section>
+</div>
 
-<section class="box">
+<div class="box">
   <h2>Recursos</h2>
   <div class="track">
-    <span class="lbl">Espaços de Magia<small>2º nível · recupera em descanso curto</small></span>
+    <span class="lbl">Espaços de Magia<small><span data-v="slotLvl"></span>º nível · recupera em descanso curto</small></span>
     <span class="pips" id="pipsSlots"></span>
   </div>
   <div class="track">
-    <span class="lbl">Maldição da Lâmina Maldita<small>1 uso · descanso curto</small></span>
+    <span class="lbl">Maldição da Lâmina Maldita<small>ação bônus · 1 uso · descanso curto</small></span>
     <span class="pips" id="pipsCurse"></span>
   </div>
   <div class="track">
-    <span class="lbl">Dados de Vida<small>d8 · gastos</small></span>
+    <span class="lbl">Dados de Vida<small>d8 · gastos · descanso curto: cada dado cura 1d8 <span data-v="conS"></span></small></span>
     <span class="pips" id="pipsHd"></span>
   </div>
   <div class="track">
@@ -202,34 +240,177 @@ li{margin:2px 0;}
     <span class="lbl">Morte — Falhas</span>
     <span class="pips" id="pipsDeathF"></span>
   </div>
-</section>
+</div>
 
-<section class="box">
-  <h2>Ataques &amp; Magias</h2>
+<div class="box">
+  <h2>Ataques</h2>
   <table>
-    <thead><tr><th>Nome</th><th>Bônus</th><th>Dano / Tipo</th></tr></thead>
+    <thead><tr><th>Nome</th><th>Bônus</th><th>Dano / Tipo</th><th>Alcance</th></tr></thead>
     <tbody>
-      <tr><td>Rapieira</td><td id="atkMelee">--</td><td><span id="dmgMelee">1d8+3</span> perfurante</td></tr>
-      <tr><td>Rajada Mística</td><td id="atkSpell">--</td><td><span id="dmgBlast">1d10+3</span> força</td></tr>
+      <tr><td>Rapieira</td><td data-v="atk"></td><td><span data-v="rapDmg"></span> perfurante</td><td>1,5 m</td></tr>
+      <tr><td>Rajada Mística</td><td data-v="atk"></td><td><span data-v="ebDmg"></span> força</td><td>36 m</td></tr>
     </tbody>
   </table>
-  <div class="grid g3" style="margin-top:8px;">
-    <div class="stat"><div class="v" id="spellDc">--</div><div class="l">CD Magia</div></div>
-    <div class="stat"><div class="v" id="spellAtk">--</div><div class="l">Atq. Magia</div></div>
+  <p class="small-note">Contra alvo com a Maldição da Lâmina Maldita: <b>+<span data-v="prof"></span></b> no dano e crítico com <b>19–20</b>.</p>
+
+  <details class="card">
+    <summary><span><span class="t">Rapieira</span><span class="s">Arma marcial corpo a corpo · Acuidade · 1d8 perfurante · 1 kg</span></span></summary>
+    <div class="card-body">
+      <p><b>Jogada de ataque:</b> 1d20 + <span data-v="prof"></span> (proficiência) + <span data-v="cha"></span> (Carisma, por Guerreiro Maldito) = <b>1d20 <span data-v="atk"></span></b> contra a CA do alvo.</p>
+      <p><b>Dano:</b> 1d8 + <span data-v="cha"></span> (Carisma) = <b><span data-v="rapDmg"></span></b> perfurante. Acerto crítico (20 natural): dobra os dados (2d8 <span data-v="chaS"></span>).</p>
+      <p><b>Acuidade:</b> a arma normalmente permite escolher Força ou Destreza; Guerreiro Maldito substitui pelo Carisma (+<span data-v="cha"></span>) enquanto for a arma tocada após o último descanso longo. Qualquer outra arma usa Destreza (<span data-v="dexS"></span>).</p>
+      <p><b>Ação de Ataque:</b> 1 ataque por ação. Com o Pacto da Corrente, você pode abrir mão desse ataque para que o Diabrete ataque com a reação dele (Ferrão +5, 1d4+3 + 3d6 veneno).</p>
+      <p><b>Ataque de oportunidade:</b> quando uma criatura hostil que você vê sai do seu alcance (1,5 m), pode usar a reação para um ataque com a rapieira. Se usar a reação para Escudo, não sobra reação para isso.</p>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary><span><span class="t">Rajada Mística</span><span class="s">Truque · ataque de magia à distância · 36 m · 1d10 força por raio</span></span></summary>
+    <div class="card-body">
+      <p><b>Jogada de ataque:</b> 1d20 + <span data-v="prof"></span> + <span data-v="cha"></span> = <b>1d20 <span data-v="atk"></span></b>. Com <span data-v="beams"></span> raio(s) no nível <span data-v="level"></span>; cada raio tem sua própria jogada e pode ir a alvos diferentes.</p>
+      <p><b>Dano:</b> 1d10 força + <span data-v="cha"></span> por raio (Explosão Agonizante) = <b><span data-v="ebDmg"></span></b>. Crítico: 2d10 <span data-v="chaS"></span>.</p>
+      <p><b>Desvantagem em corpo a corpo:</b> é um ataque à distância — se houver uma criatura hostil a 1,5 m de você que possa vê-lo e não esteja incapacitada, a jogada tem desvantagem. Nesse caso use a rapieira ou Desengaje/Passo das Brumas primeiro.</p>
+      <p><b>Não gasta espaço de magia.</b> Componentes V, S: precisa poder falar e ter uma mão livre.</p>
+    </div>
+  </details>
+</div>
+
+<div class="box">
+  <h2>Familiar — Diabrete</h2>
+  <p class="small-note">Sem nome próprio; atende pelo alias que Vaelun estiver usando no momento. Pele branca, albino.</p>
+  <div class="grid g2" style="margin:6px 0;">
+    <div><label for="famCur">PV atuais</label><input type="text" inputmode="numeric" id="famCur"></div>
+    <div><label for="famMax">PV máximos</label><input type="text" inputmode="numeric" id="famMax"></div>
+  </div>
+  <details class="card">
+    <summary><span><span class="t">Bloco de estatísticas</span><span class="s">Ínfero (diabo, metamorfo) Miúdo · Leal e Mau · ND 1</span></span></summary>
+    <div class="card-body">
+      <dl class="stats">
+        <dt>CA</dt><dd>13</dd>
+        <dt>PV</dt><dd>10 (3d4+3)</dd>
+        <dt>Deslocamento</dt><dd>6 m, voo 12 m</dd>
+      </dl>
+      <div class="statline">
+        <div><b>For</b>6 (−2)</div><div><b>Des</b>17 (+3)</div><div><b>Con</b>13 (+1)</div>
+        <div><b>Int</b>11 (+0)</div><div><b>Sab</b>12 (+1)</div><div><b>Car</b>14 (+2)</div>
+      </div>
+      <dl class="stats">
+        <dt>Perícias</dt><dd>Enganação +4, Intuição +3, Persuasão +4, Furtividade +5</dd>
+        <dt>Resistências</dt><dd>frio; concussão, perfurante e cortante de ataques não mágicos que não sejam prateados</dd>
+        <dt>Imunidades</dt><dd>fogo, veneno; condição envenenado</dd>
+        <dt>Sentidos</dt><dd>visão no escuro 36 m, Percepção passiva 11</dd>
+        <dt>Idiomas</dt><dd>Infernal, Comum</dd>
+      </dl>
+      <p><b>Metamorfo.</b> Pode usar a ação para se transformar numa fera que lembre um rato (desloc. 6 m), um corvo (6 m, voo 18 m) ou uma aranha (6 m, escalada 6 m), ou voltar à forma verdadeira. As estatísticas não mudam, exceto o deslocamento. Equipamento não se transforma. Volta à forma verdadeira se morrer.</p>
+      <p><b>Visão do Diabo.</b> Escuridão mágica não atrapalha a visão no escuro dele.</p>
+      <p><b>Resistência à Magia.</b> Vantagem em testes de resistência contra magias e outros efeitos mágicos.</p>
+      <p><b>Ferrão (Mordida na forma de fera).</b> Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5 m, um alvo. Dano: 5 (1d4+3) perfurante, e o alvo faz teste de resistência de Constituição CD 11, sofrendo 10 (3d6) de dano de veneno se falhar ou metade se passar.</p>
+      <p><b>Invisibilidade.</b> Fica invisível magicamente até atacar ou até sua concentração acabar (como se concentrasse numa magia). Equipamento que carrega fica invisível junto.</p>
+      <div class="mine"><b>Como familiar:</b> age no seu turno, mas de forma independente e obedecendo suas ordens. Não pode usar a ação de Ataque por conta própria — só ataca quando você cede um dos seus ataques (Pacto da Corrente), usando a reação dele. Telepatia com você a até 30 m (sem limite de distância com Voz do Mestre da Corrente). Se cair a 0 PV, desaparece; conjure Achar Familiar de novo (ritual, 1 hora, 10 po). Pode ser dispensado para um semiplano com uma ação e chamado de volta com outra.</div>
+    </div>
+  </details>
+</div>
+
+<div class="box">
+  <h2>O que fazer no turno</h2>
+  <details class="card">
+    <summary><span><span class="t">Ação</span><span class="s">Uma por turno</span></span></summary>
+    <div class="card-body">
+      <ul>
+        <li><b>Atacar</b> — rapieira (<span data-v="atk"></span>, <span data-v="rapDmg"></span>) ou ceder o ataque ao Diabrete.</li>
+        <li><b>Rajada Mística</b> — <span data-v="atk"></span>, <span data-v="ebDmg"></span> força, 36 m.</li>
+        <li><b>Conjurar</b> — Comando, Detectar Pensamentos (gastam espaço) ou Ilusão Menor (truque).</li>
+        <li><b>Metamorfo</b> — mudar de aparência e voz.</li>
+        <li><b>Ver pelo familiar</b> — usar os sentidos do Diabrete até o início do próximo turno.</li>
+        <li><b>Gerais</b> — Disparada (dobra o movimento), Desengajar (sem ataques de oportunidade), Esquivar (ataques contra você com desvantagem; TR de Des com vantagem), Ajudar, Esconder (Furtividade <span data-v="stealth"></span>), Procurar, Usar um objeto.</li>
+      </ul>
+    </div>
+  </details>
+  <details class="card">
+    <summary><span><span class="t">Ação bônus</span><span class="s">Uma por turno, só se algo conceder</span></span></summary>
+    <div class="card-body">
+      <ul>
+        <li><b>Maldição da Lâmina Maldita</b> — alvo a até 9 m, 1 minuto, 1 uso por descanso curto.</li>
+        <li><b>Passo das Brumas</b> — teleporte de 9 m (gasta espaço). No mesmo turno só pode conjurar mais um truque de 1 ação.</li>
+        <li><b>Bruxaria</b> — só se for confirmada com o mestre.</li>
+      </ul>
+    </div>
+  </details>
+  <details class="card">
+    <summary><span><span class="t">Reação</span><span class="s">Uma por rodada, recupera no início do seu turno</span></span></summary>
+    <div class="card-body">
+      <ul>
+        <li><b>Escudo</b> — quando for atingido por um ataque: +5 na CA (<span data-v="ac"></span> → <b><span data-v="acShield"></span></b>) até o seu próximo turno. Gasta espaço.</li>
+        <li><b>Ataque de oportunidade</b> — rapieira contra quem sair do seu alcance.</li>
+        <li><b>Diabrete</b> — usa a reação dele para atacar quando você cede um ataque.</li>
+      </ul>
+    </div>
+  </details>
+  <details class="card">
+    <summary><span><span class="t">Regras rápidas</span><span class="s">Movimento, concentração, críticos, 0 PV</span></span></summary>
+    <div class="card-body">
+      <ul>
+        <li><b>Movimento:</b> 9 m, pode dividir antes e depois da ação. Levantar-se gasta metade. Terreno difícil custa o dobro.</li>
+        <li><b>Concentração</b> (Detectar Pensamentos): ao sofrer dano, teste de resistência de Constituição (<span data-v="conS"></span>) CD 10 ou metade do dano, o que for maior. Conjurar outra magia de concentração, ficar incapacitado ou morrer encerra.</li>
+        <li><b>Vantagem/Desvantagem:</b> rola 2d20 e usa o maior/menor; não acumulam, e se houver as duas, cancelam.</li>
+        <li><b>Crítico:</b> 20 natural acerta sempre e dobra todos os dados de dano. 1 natural erra sempre. Contra alvo amaldiçoado, 19 também é crítico.</li>
+        <li><b>Cobertura:</b> meia +2 CA e TR de Des; três quartos +5; total não pode ser alvo.</li>
+        <li><b>Escuridão / invisível:</b> ataques contra o que não vê têm desvantagem; ataques de quem não é visto têm vantagem. Vaelun não tem visão no escuro.</li>
+        <li><b>0 PV:</b> cai inconsciente. No início de cada turno seu, rola d20: 10+ sucesso, 9− falha; 3 sucessos estabiliza, 3 falhas morre. 1 natural = 2 falhas; 20 natural = volta com 1 PV. Sofrer dano a 0 PV = 1 falha (2 se crítico). Alguém pode estabilizá-lo com Sabedoria (Medicina) CD 10.</li>
+        <li><b>Morte instantânea:</b> dano que leve a 0 PV com sobra igual ou maior que o PV máximo mata na hora.</li>
+        <li><b>Descanso curto</b> (1 h): gaste dados de vida (1d8 <span data-v="conS"></span> cada) e recupere espaços de magia e a Maldição. <b>Descanso longo</b> (8 h): todos os PV, metade dos dados de vida (mínimo 1) e volta a escolher a arma do Guerreiro Maldito.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+</section>
+
+<!-- ============ MAGIAS ============ -->
+<section class="tab" id="tab-magias" data-title="Magias">
+
+<div class="box">
+  <h2>Conjuração — Pacto</h2>
+  <div class="grid g3">
+    <div class="stat"><div class="v" data-v="dc"></div><div class="l">CD Magia</div></div>
+    <div class="stat"><div class="v" data-v="atk"></div><div class="l">Atq. Magia</div></div>
     <div class="stat"><div class="v">Car</div><div class="l">Atributo</div></div>
   </div>
-  <p class="small-note">Rapieira usa Carisma (Guerreiro Maldito). Rajada Mística soma Carisma ao dano (Explosão Agonizante).</p>
+  <div class="track" style="margin-top:8px;">
+    <span class="lbl">Espaços de Magia<small><span data-v="slots"></span> espaços · todos de <span data-v="slotLvl"></span>º nível · descanso curto</small></span>
+    <span class="pips" id="pipsSlots2"></span>
+  </div>
+  <p class="small-note">CD = 8 + <span data-v="prof"></span> + <span data-v="cha"></span> · Ataque = <span data-v="prof"></span> + <span data-v="cha"></span>. Truques conhecidos: 2 · Magias conhecidas: 4 (pode trocar 1 ao subir de nível). Toda magia com espaço é conjurada no <span data-v="slotLvl"></span>º nível. Foco arcano substitui componentes materiais sem custo.</p>
+</div>
+
+<div class="box">
+  <h2>Truques</h2>
+  <div id="spellsC"></div>
+</div>
+<div class="box">
+  <h2>1º nível</h2>
+  <div id="spells1"></div>
+</div>
+<div class="box">
+  <h2>2º nível</h2>
+  <div id="spells2"></div>
+</div>
+<div class="box">
+  <h2>Ritual (Pacto da Corrente)</h2>
+  <div id="spellsR"></div>
+</div>
+<div class="box">
+  <h2>Pendente de confirmação</h2>
+  <p class="small-note">Bruxo de <span data-v="level"></span>º nível conhece 4 magias — para pegar Bruxaria seria preciso trocar uma das atuais. Mantida aqui para decidir com o mestre.</p>
+  <div id="spellsP"></div>
+</div>
+
 </section>
 
-<section class="box">
-  <h2>Truques &amp; Magias Conhecidas</h2>
-  <p><b>Truques:</b> Rajada Mística, Ilusão Menor</p>
-  <p><b>1º nível:</b> Comando, Escudo</p>
-  <p><b>2º nível:</b> Passo das Brumas, Detectar Pensamentos</p>
-  <p class="small-note">"Bruxaria" (Hex) e a tradução de Explosão Agonizante ainda não confirmadas — verificar com o mestre.</p>
-</section>
+<!-- ============ ATRIBUTOS ============ -->
+<section class="tab" id="tab-atributos" data-title="Atributos">
 
-<section class="box">
+<div class="box">
   <h2>Atributos</h2>
   <div class="grid abils">
     <div class="abil"><div class="name">For</div><input type="number" inputmode="numeric" id="sStr" aria-label="Força"><div class="mod" id="mStr">--</div></div>
@@ -239,10 +420,10 @@ li{margin:2px 0;}
     <div class="abil"><div class="name">Sab</div><input type="number" inputmode="numeric" id="sWis" aria-label="Sabedoria"><div class="mod" id="mWis">--</div></div>
     <div class="abil"><div class="name">Car</div><input type="number" inputmode="numeric" id="sCha" aria-label="Carisma"><div class="mod" id="mCha">--</div></div>
   </div>
-  <p class="small-note">Changeling: +2 Carisma, +1 Sabedoria (já aplicados nos valores acima).</p>
-</section>
+  <p class="small-note">Changeling: +2 Carisma, +1 Sabedoria (já aplicados). Modificador = (valor − 10) ÷ 2, arredondado para baixo.</p>
+</div>
 
-<section class="box">
+<div class="box">
   <h2>Testes de Resistência</h2>
   <div class="skill-row"><span><span class="dot"></span>Força</span><span id="svStr">--</span></div>
   <div class="skill-row"><span><span class="dot"></span>Destreza</span><span id="svDex">--</span></div>
@@ -250,46 +431,41 @@ li{margin:2px 0;}
   <div class="skill-row"><span><span class="dot"></span>Inteligência</span><span id="svInt">--</span></div>
   <div class="skill-row prof"><span><span class="dot on"></span>Sabedoria</span><span id="svWis">--</span></div>
   <div class="skill-row prof"><span><span class="dot on"></span>Carisma</span><span id="svCha">--</span></div>
-</section>
+  <p class="small-note">Bruxo é proficiente em Sabedoria e Carisma. Rola-se 1d20 + modificador contra a CD do efeito.</p>
+</div>
 
-<section class="box">
+<div class="box">
   <h2>Perícias</h2>
   <div id="skillList"></div>
-  <p class="small-note" style="margin-top:8px;">Percepção passiva: <b id="ppc">--</b> · Intuição passiva: <b id="ppi">--</b></p>
+  <p class="small-note" style="margin-top:8px;">Percepção passiva: <b id="ppc">--</b> · Intuição passiva: <b id="ppi">--</b> · Investigação passiva: <b id="ppv">--</b></p>
+  <p class="small-note">Origem: Bruxo (Arcanismo, Investigação) · Charlatão (Enganação, Prestidigitação) · Changeling (Intuição, Persuasão).</p>
+</div>
+
+<div class="box">
+  <h2>Proficiências &amp; Idiomas</h2>
+  <dl class="stats">
+    <dt>Armaduras</dt><dd>Leves e médias, escudos (Guerreiro Maldito)</dd>
+    <dt>Armas</dt><dd>Simples e marciais (Guerreiro Maldito)</dd>
+    <dt>Ferramentas</dt><dd>Kit de disfarce, ferramentas de falsário</dd>
+    <dt>Idiomas</dt><dd>Comum, Infernal, Silvestre</dd>
+  </dl>
+  <p class="small-note">Armadura média limita o bônus de Destreza a +2; brunea e meia armadura dão desvantagem em Furtividade. Sem proficiência na armadura vestida, não se conjura magias.</p>
+</div>
+
 </section>
 
-<section class="box">
-  <h2>Características e Traços</h2>
-  <ul>
-    <li>Metamorfo — Changeling</li>
-    <li>Instintos de Metamorfo</li>
-    <li>Trabalho com Magia (Pacto)</li>
-    <li>Patrono Sobrenatural: Lâmina Maldita</li>
-    <li>Maldição da Lâmina Maldita</li>
-    <li>Guerreiro Maldito</li>
-    <li>Mente Desperta (telepatia 9m)</li>
-    <li>Invocações Místicas: Explosão Agonizante, Voz do Mestre da Corrente</li>
-    <li>Pacto da Corrente</li>
-    <li>Charlatão: Kit de Disfarce, Ferramentas de Falsário</li>
-  </ul>
+<!-- ============ TRAÇOS ============ -->
+<section class="tab" id="tab-tracos" data-title="Traços">
+<div id="featList"></div>
 </section>
 
-<section class="box">
-  <h2>Familiar — Diabrete</h2>
-  <p class="small-note">Sem nome próprio; atende pelo alias que Vaelun estiver usando no momento. Pele branca, albino.</p>
-</section>
+<!-- ============ MAIS ============ -->
+<section class="tab" id="tab-mais" data-title="Equipamento e anotações">
 
-<section class="box">
+<div class="box">
   <h2>Equipamento</h2>
   <label for="armor">Armadura</label>
-  <select id="armor">
-    <option value="none">Nenhuma (10 + Des)</option>
-    <option value="padded">Acolchoada (11 + Des)</option>
-    <option value="leather">Couro (11 + Des)</option>
-    <option value="studded">Couro Batido (12 + Des)</option>
-    <option value="hide">Couro Cru (12 + Des, máx 2)</option>
-    <option value="chain">Camisão de Malha (13 + Des, máx 2)</option>
-  </select>
+  <select id="armor"></select>
   <label class="check"><input type="checkbox" id="shield"> Escudo (+2 CA)</label>
   <div class="grid g4" style="margin-top:8px;">
     <div><label for="cCp">PC</label><input type="text" inputmode="numeric" id="cCp"></div>
@@ -299,27 +475,34 @@ li{margin:2px 0;}
   </div>
   <label for="items" style="margin-top:8px;">Itens</label>
   <textarea id="items"></textarea>
-</section>
+</div>
 
-<section class="box">
-  <h2>Outras Proficiências &amp; Idiomas</h2>
-  <p class="small-note">Armas simples e de guerra com propriedade Acuidade ou Leve (Guerreiro Maldito) · Armaduras leves · Kit de disfarce · Ferramentas de falsário · Comum, Infernal, Silvestre (Changeling)</p>
-</section>
-
-<section class="box">
+<div class="box">
   <h2>Personalidade</h2>
   <p class="small-note"><b>Ideal:</b> Tudo é parte de um plano — até a coincidência é dado.<br>
   <b>Vínculo:</b> A Regra — raramente dá sua palavra, mas sempre a cumpre.<br>
   <b>Fraqueza:</b> Paranoia — vê intenção onde talvez só exista acaso.</p>
-</section>
+</div>
 
-<section class="box">
+<div class="box">
   <h2>Anotações</h2>
-  <textarea id="notes" style="min-height:110px;"></textarea>
+  <textarea id="notes" style="min-height:140px;"></textarea>
   <p class="saved" id="savedAt"></p>
+</div>
+
 </section>
 
 </main>
+
+<nav class="tabbar no-print" aria-label="Seções da ficha">
+  <div class="tabbar-inner">
+    <button type="button" data-tab="combate"><span class="ico">⚔</span>Combate</button>
+    <button type="button" data-tab="magias"><span class="ico">✦</span>Magias</button>
+    <button type="button" data-tab="atributos"><span class="ico">◈</span>Atributos</button>
+    <button type="button" data-tab="tracos"><span class="ico">❖</span>Traços</button>
+    <button type="button" data-tab="mais"><span class="ico">☰</span>Mais</button>
+  </div>
+</nav>
 
 <button id="top" class="no-print" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Voltar ao topo">↑</button>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -350,20 +533,37 @@ const sg = n => (n>=0?'+':'−')+Math.abs(n);
 const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
 const STORAGE_KEY = 'vaelun-sheet-v1';
 const THEME_KEY = 'vaelun-theme';
-const PROF = 2;
+const TAB_KEY = 'vaelun-tab';
+
+// ---- Personagem ----
+const LEVEL = 3;
+const PROF = Math.ceil(LEVEL/4) + 1;                         // 2 até o 4º nível
+const WARLOCK_SLOTS = [1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4][LEVEL-1];
+const WARLOCK_SLOT_LVL = Math.min(5, Math.ceil(LEVEL/2));    // 1,2,2,3,3,4,4,5...
+const EB_BEAMS = 1 + (LEVEL>=5) + (LEVEL>=11) + (LEVEL>=17);
 const ABILS = ['str','dex','con','int','wis','cha'];
 const ABIL_PT = {str:'For',dex:'Des',con:'Con',int:'Int',wis:'Sab',cha:'Car'};
+
+// Armaduras: base, teto de Destreza, desvantagem em Furtividade, categoria.
 const ARMOR = {
-  none:{base:0,cap:99}, padded:{base:1,cap:99}, leather:{base:1,cap:99},
-  studded:{base:2,cap:99}, hide:{base:2,cap:2}, chain:{base:3,cap:2},
+  none:       {n:'Nenhuma (10 + Des)',                     base:0, cap:99, stealth:false, cat:'—'},
+  padded:     {n:'Acolchoada (11 + Des) · leve',           base:1, cap:99, stealth:true,  cat:'leve'},
+  leather:    {n:'Couro (11 + Des) · leve',                base:1, cap:99, stealth:false, cat:'leve'},
+  studded:    {n:'Couro Batido (12 + Des) · leve',         base:2, cap:99, stealth:false, cat:'leve'},
+  hide:       {n:'Gibão de Peles (12 + Des, máx 2) · média',   base:2, cap:2, stealth:false, cat:'média'},
+  chain:      {n:'Camisão de Malha (13 + Des, máx 2) · média', base:3, cap:2, stealth:false, cat:'média'},
+  scale:      {n:'Brunea (14 + Des, máx 2) · média',       base:4, cap:2, stealth:true,  cat:'média'},
+  breastplate:{n:'Peitoral (14 + Des, máx 2) · média',     base:4, cap:2, stealth:false, cat:'média'},
+  halfplate:  {n:'Meia Armadura (15 + Des, máx 2) · média',base:5, cap:2, stealth:true,  cat:'média'},
 };
 
 const BASE = {
   scores:{str:9,dex:12,con:14,int:14,wis:14,cha:17},
   hp:{cur:'',max:'',temp:''},
-  slots:{used:0,total:2},
+  fam:{cur:'10',max:'10'},
+  slots:{used:0,total:WARLOCK_SLOTS},
   curse:{used:0,total:1},
-  hd:{used:0,total:3},
+  hd:{used:0,total:LEVEL},
   death:{succ:0,fail:0},
   armor:'leather', shield:false,
   coins:{cp:'0',sp:'0',ep:'0',gp:'15'},
@@ -381,6 +581,143 @@ const SKILLS = [
   ['Religião','int',false],['Sobrevivência','wis',false],
 ];
 
+// ---- Magias (texto conforme o SRD 5e; {chaves} são substituídas pelos números da ficha) ----
+const SPELLS = [
+  { list:'spellsC', name:'Rajada Mística', sub:'Truque · Evocação', tag:'',
+    time:'1 ação', range:'36 m', comp:'V, S', dur:'Instantânea',
+    desc:[
+      'Um raio de energia crepitante dispara na direção de uma criatura dentro do alcance. Faça um ataque de magia à distância contra o alvo. Se acertar, o alvo sofre 1d10 de dano de força.',
+      'Em níveis superiores: a magia cria mais de um raio quando você alcança níveis mais altos: dois raios no 5º nível, três no 11º e quatro no 17º. Você pode direcionar os raios ao mesmo alvo ou a alvos diferentes. Faça uma jogada de ataque separada para cada raio.'
+    ],
+    mine:'<b>Vaelun:</b> ataque <b>1d20 {atk}</b>; cada raio que acerta causa <b>{ebDmg}</b> de força (Explosão Agonizante soma o Carisma). {beams} raio(s) no {level}º nível. É o seu ataque padrão à distância e não gasta espaço. Em corpo a corpo a jogada tem desvantagem.' },
+
+  { list:'spellsC', name:'Ilusão Menor', sub:'Truque · Ilusão', tag:'',
+    time:'1 ação', range:'9 m', comp:'S, M (um pouco de lã)', dur:'1 minuto',
+    desc:[
+      'Você cria um som ou uma imagem de um objeto dentro do alcance, que dura pela duração. A ilusão também termina se você a dispensar (sem precisar de ação) ou conjurar esta magia novamente.',
+      'Se você criar um som, seu volume pode variar de um sussurro a um grito. Pode ser sua voz, a voz de outra pessoa, o rugido de um leão, o rufar de tambores ou qualquer outro som que escolher. O som continua inalterado pela duração, ou você pode criar sons distintos em momentos diferentes antes de a magia acabar.',
+      'Se você criar a imagem de um objeto — como uma cadeira, pegadas enlameadas ou um baú pequeno — ela deve caber num cubo de 1,5 m. A imagem não produz som, luz, cheiro ou qualquer outro efeito sensorial. Interação física com a imagem revela que é uma ilusão, pois as coisas a atravessam.',
+      'Se uma criatura usar sua ação para examinar o som ou a imagem, ela descobre que é uma ilusão com um teste de Inteligência (Investigação) bem-sucedido contra a sua CD de magia. Se perceber a ilusão como tal, ela se torna tênue para a criatura.'
+    ],
+    mine:'<b>Vaelun:</b> CD para descobrir <b>{dc}</b>. Só componente somático — funciona mesmo amordaçado. Usos de charlatão: imitar a voz de um alias, criar um "baú" para se esconder atrás, um som para o Diabrete se aproveitar, pegadas falsas.' },
+
+  { list:'spells1', name:'Comando', sub:'1º nível · Encantamento', tag:'warn:Confirmar',
+    time:'1 ação', range:'18 m', comp:'V', dur:'Instantânea',
+    desc:[
+      'Você profere uma palavra de comando para uma criatura que possa ver dentro do alcance. O alvo deve ser bem-sucedido num teste de resistência de Sabedoria ou seguir o comando no seu próximo turno. A magia não tem efeito se o alvo for um morto-vivo, se ele não entender seu idioma ou se o seu comando for diretamente prejudicial a ele.',
+      'Alguns comandos típicos e seus efeitos: <b>Aproxime-se</b> — o alvo se move na sua direção pela rota mais curta e direta, terminando o turno se chegar a 1,5 m de você. <b>Largue</b> — o alvo solta o que estiver segurando e termina o turno. <b>Fuja</b> — o alvo gasta o turno se afastando de você pelo meio mais rápido disponível. <b>Deite-se</b> — o alvo cai no chão e termina o turno. <b>Pare</b> — o alvo não se move nem faz nenhuma ação.',
+      'Você pode dar um comando diferente desses; nesse caso, o mestre determina como o alvo se comporta. Se o alvo não puder seguir seu comando, a magia termina.',
+      'Em níveis superiores: ao conjurar com um espaço de 2º nível ou superior, você pode afetar uma criatura adicional para cada nível de espaço acima do 1º. As criaturas devem estar a até 9 m umas das outras quando você as escolhe.'
+    ],
+    mine:'<b>Vaelun:</b> TR de Sabedoria CD <b>{dc}</b>. Seus espaços são todos de {slotLvl}º nível, então Comando afeta <b>{cmdTargets}</b> criaturas. Só componente verbal: funciona com as mãos ocupadas. <b>Atenção:</b> Comando não está na lista do Bruxo nem na lista expandida da Lâmina Maldita (PHB/Xanathar) — confirmar com o mestre.' },
+
+  { list:'spells1', name:'Escudo', sub:'1º nível · Abjuração', tag:'ok:Lâmina Maldita',
+    time:'1 reação, quando você é atingido por um ataque ou é alvo de Mísseis Mágicos', range:'Pessoal', comp:'V, S', dur:'1 rodada',
+    desc:[
+      'Uma barreira invisível de força mágica aparece e protege você. Até o início do seu próximo turno, você recebe +5 de bônus na CA, inclusive contra o ataque que desencadeou a magia, e não sofre dano de Mísseis Mágicos.'
+    ],
+    mine:'<b>Vaelun:</b> CA {ac} → <b>{acShield}</b> até o seu próximo turno, valendo contra o ataque que já acertou (pode transformar um acerto em erro). Gasta 1 dos {slots} espaços e a sua reação da rodada. Vem da lista expandida da Lâmina Maldita.' },
+
+  { list:'spells2', name:'Passo das Brumas', sub:'2º nível · Conjuração', tag:'',
+    time:'1 ação bônus', range:'Pessoal', comp:'V', dur:'Instantânea',
+    desc:[
+      'Brevemente envolto em névoa prateada, você se teleporta até 9 m para um espaço desocupado que possa ver.'
+    ],
+    mine:'<b>Vaelun:</b> sai de um agarrão ou de um cerco sem provocar ataque de oportunidade, cruza abismos e grades. Regra da ação bônus: no turno em que conjura uma magia como ação bônus, a única outra magia que pode conjurar é um truque de 1 ação — Rajada Mística sim, Comando ou Detectar Pensamentos não.' },
+
+  { list:'spells2', name:'Detectar Pensamentos', sub:'2º nível · Adivinhação · Concentração', tag:'warn:Confirmar',
+    time:'1 ação', range:'Pessoal', comp:'V, S, M (uma moeda de cobre)', dur:'Concentração, até 1 minuto',
+    desc:[
+      'Pela duração, você pode ler os pensamentos de certas criaturas. Ao conjurar a magia e como sua ação em cada turno até ela acabar, você pode focar sua mente em qualquer criatura que possa ver a até 9 m. Se a criatura escolhida tiver Inteligência 3 ou menos ou não falar nenhum idioma, ela não é afetada.',
+      'Inicialmente você aprende os pensamentos superficiais da criatura — o que está mais presente na mente dela naquele momento. Como uma ação, você pode desviar a atenção para os pensamentos de outra criatura ou tentar sondar mais fundo na mesma mente. Se sondar mais fundo, o alvo deve fazer um teste de resistência de Sabedoria. Se falhar, você obtém informações sobre o raciocínio dele (se houver), seu estado emocional e algo que ocupe muito a mente dele (como algo com que se preocupa, ama ou odeia). Se for bem-sucedido, a magia termina. De qualquer forma, o alvo sabe que você está sondando sua mente e, a menos que você desvie a atenção para os pensamentos de outra criatura, ele pode usar a ação no turno dele para fazer um teste de Inteligência resistido pelo seu teste de Inteligência; se vencer, a magia termina.',
+      'Perguntas dirigidas verbalmente à criatura alvo moldam naturalmente o curso dos pensamentos dela, então esta magia é especialmente eficaz como parte de um interrogatório.',
+      'Você também pode usar esta magia para detectar a presença de criaturas pensantes que não possa ver. Ao conjurar a magia ou como sua ação durante a duração, você pode procurar pensamentos a até 9 m. A magia atravessa barreiras, mas é bloqueada por 60 cm de pedra, 5 cm de qualquer metal que não seja chumbo ou uma fina lâmina de chumbo. Você não pode detectar uma criatura com Inteligência 3 ou menos ou que não fale nenhum idioma. Ao detectar a presença de uma criatura dessa forma, você pode ler os pensamentos dela pelo resto da duração como descrito acima, mesmo sem vê-la, mas ela ainda precisa estar dentro do alcance.'
+    ],
+    mine:'<b>Vaelun:</b> TR de Sabedoria CD <b>{dc}</b> para sondar fundo; teste de Inteligência resistido usa o seu <b>{intS}</b>. Concentração: ao sofrer dano, TR de Constituição ({conS}) CD 10 ou metade do dano. Cai como uma luva na paranoia do personagem. <b>Atenção:</b> não está na lista do Bruxo (é magia do patrono Grande Antigo, de Bardo, Feiticeiro e Mago) — confirmar com o mestre.' },
+
+  { list:'spellsR', name:'Achar Familiar', sub:'1º nível · Conjuração · Ritual', tag:'ok:Pacto da Corrente',
+    time:'1 hora', range:'3 m', comp:'V, S, M (10 po de carvão, incenso e ervas, consumidos em fogo num braseiro de latão)', dur:'Instantânea',
+    desc:[
+      'Você ganha o serviço de um familiar, um espírito que assume forma animal à sua escolha. Aparecendo num espaço desocupado dentro do alcance, o familiar tem as estatísticas da forma escolhida, embora seja um celestial, feérico ou ínfero (à sua escolha) em vez de uma fera. Com o Pacto da Corrente, pode ser um diabrete, pseudodragão, quasit ou sprite.',
+      'Seu familiar age de forma independente, mas sempre obedece seus comandos. Em combate, rola sua própria iniciativa e age no próprio turno. Um familiar não pode atacar, mas pode realizar outras ações normalmente.',
+      'Quando o familiar cai a 0 pontos de vida, ele desaparece, sem deixar forma física. Ele reaparece quando você conjura esta magia de novo. Enquanto estiver a até 30 m de você, vocês podem se comunicar telepaticamente. Além disso, como uma ação, você pode ver pelos olhos do familiar e ouvir o que ele ouve até o início do seu próximo turno, ganhando os sentidos especiais que ele tiver. Durante esse tempo, você fica surdo e cego aos seus próprios sentidos.',
+      'Como uma ação, você pode dispensar temporariamente o familiar. Ele desaparece para um semiplano, onde aguarda seu chamado. Ou pode dispensá-lo para sempre. Como uma ação enquanto ele estiver dispensado temporariamente, você pode fazê-lo reaparecer em qualquer espaço desocupado a até 9 m de você.',
+      'Você não pode ter mais de um familiar por vez. Se conjurar de novo enquanto já tem um, ele adota uma nova forma à sua escolha.',
+      'Por fim, quando você conjura uma magia com alcance de toque, seu familiar pode entregá-la como se tivesse conjurado. Ele deve estar a até 30 m de você e usa a reação dele para entregar quando você conjura.'
+    ],
+    mine:'<b>Vaelun:</b> aprendida pelo Pacto da Corrente; não conta como magia conhecida. Conjure como ritual (10 minutos a mais, sem gastar espaço). O Diabrete ataca só quando você cede um ataque da ação de Atacar. Com Voz do Mestre da Corrente, a telepatia e os sentidos não têm limite de distância no mesmo plano.' },
+
+  { list:'spellsP', name:'Bruxaria (Hex)', sub:'1º nível · Encantamento · Concentração', tag:'warn:Não confirmada',
+    time:'1 ação bônus', range:'27 m', comp:'V, S, M (o olho petrificado de um tritão)', dur:'Concentração, até 1 hora',
+    desc:[
+      'Você lança uma maldição sobre uma criatura que possa ver dentro do alcance. Até a magia acabar, você causa 1d6 de dano necrótico extra ao alvo sempre que o atingir com um ataque. Além disso, escolha um atributo ao conjurar a magia: o alvo tem desvantagem em testes de atributo feitos com o atributo escolhido.',
+      'Se o alvo cair a 0 pontos de vida antes de a magia acabar, você pode usar uma ação bônus num turno posterior seu para amaldiçoar uma nova criatura.',
+      'Remover Maldição conjurado no alvo encerra esta magia antes do tempo.',
+      'Em níveis superiores: com um espaço de 3º ou 4º nível, você pode manter a concentração por até 8 horas. Com espaço de 5º nível ou superior, por até 24 horas.'
+    ],
+    mine:'<b>Se entrar:</b> cada raio da Rajada Mística que acertar o alvo causa {ebDmg} + 1d6 necrótico; a rapieira, {rapDmg} + 1d6. Combina com a Maldição da Lâmina Maldita, mas as duas são ações bônus — leva 2 turnos para aplicar ambas.' },
+];
+
+// ---- Características ----
+const FEATURES = [
+  { group:'Raça — Changeling', src:'Eberron: Rising from the Last War', items:[
+    { name:'Metamorfo', sub:'1 ação', desc:[
+      'Como uma ação, você pode mudar sua aparência e sua voz. Você determina os detalhes das mudanças, incluindo coloração, comprimento do cabelo e sexo. Também pode ajustar sua altura e peso, mas não a ponto de mudar sua categoria de tamanho. Pode se fazer parecer membro de outra raça, mas nenhuma das suas estatísticas de jogo muda. Não pode duplicar a aparência de uma criatura que nunca viu e deve adotar uma forma que tenha a mesma disposição básica de membros que a sua. Suas roupas e equipamento não são alterados por este traço.',
+      'Você permanece na nova forma até usar uma ação para voltar à sua forma verdadeira ou até morrer.'
+    ], mine:'<b>Na prática:</b> não é magia nem ilusão — Detectar Magia não acusa e Dissipar Magia não desfaz. Para se passar por alguém específico, o mestre pode pedir Carisma (Enganação) <b>{decep}</b> contra a Intuição de quem conhece a pessoa. Roupas precisam ser trocadas de verdade (kit de disfarce ajuda).' },
+    { name:'Instintos de Metamorfo', sub:'Passivo', desc:[
+      'Você ganha proficiência em duas das seguintes perícias, à sua escolha: Enganação, Intimidação, Intuição ou Persuasão.'
+    ], mine:'<b>Escolhidas:</b> Intuição ({insight}) e Persuasão ({persu}).' },
+    { name:'Tamanho, deslocamento e idiomas', sub:'Passivo', desc:[
+      'Changelings são Médios, com 1,5 m a 1,8 m de altura. Deslocamento base de 9 m. Falam, leem e escrevem Comum e dois outros idiomas à escolha.'
+    ], mine:'<b>Idiomas:</b> Comum, Infernal (língua do Diabrete) e Silvestre. Sem visão no escuro.' },
+  ]},
+  { group:'Classe — Bruxo', src:"Player's Handbook · nível {level}", items:[
+    { name:'Trabalho com Magia (Pacto)', sub:'Nível 1', desc:[
+      'Sua pesquisa arcana e a magia concedida pelo seu patrono lhe deram acesso a magias. Você conhece 2 truques da lista do Bruxo (mais 1 no 4º e 10º nível) e magias de nível igual ou inferior ao dos seus espaços.',
+      'Espaços de magia: a tabela do Bruxo mostra quantos espaços você tem e o nível deles. Você recupera todos os espaços gastos ao terminar um descanso curto ou longo. Toda magia que exija espaço é conjurada no nível dos seus espaços.',
+      'Magias conhecidas: ao subir de nível, você pode trocar uma das magias conhecidas por outra da lista do Bruxo. Carisma é seu atributo de conjuração. Você pode usar um foco arcano como foco de conjuração.'
+    ], mine:'<b>Vaelun:</b> {slots} espaços de {slotLvl}º nível · CD <b>{dc}</b> · ataque <b>{atk}</b> · 2 truques · 4 magias conhecidas. Como só tem 2 espaços, use Rajada Mística para o dia a dia e guarde os espaços para Escudo e Passo das Brumas.' },
+    { name:'Patrono Sobrenatural: Lâmina Maldita', sub:'Nível 1', desc:[
+      'Você fez um pacto com uma entidade misteriosa do Shadowfell — a força que se manifesta em armas sencientes como a Espada Negra. Sua lista de magias é expandida: 1º Escudo, Golpe Colérico; 2º Borrão, Golpe Marcante; 3º Piscar, Arma Elemental; 4º Assassino Fantasmagórico, Golpe Atordoante; 5º Golpe Banidor, Cone de Frio.'
+    ], mine:'<b>Vaelun:</b> Escudo vem desta lista. Fonte: Xanathar\'s Guide to Everything.' },
+    { name:'Maldição da Lâmina Maldita', sub:'Nível 1 · ação bônus · 1 uso por descanso curto', desc:[
+      'Como uma ação bônus, escolha uma criatura que possa ver a até 9 m de você. O alvo fica amaldiçoado por 1 minuto. A maldição termina antes se o alvo morrer, se você morrer ou se você ficar incapacitado. Até a maldição acabar, você recebe os seguintes benefícios:',
+      '• Você ganha um bônus nas jogadas de dano contra o alvo amaldiçoado igual ao seu bônus de proficiência.',
+      '• Qualquer jogada de ataque sua contra o alvo amaldiçoado é um acerto crítico se o resultado do d20 for 19 ou 20.',
+      '• Se o alvo amaldiçoado morrer, você recupera pontos de vida iguais ao seu nível de Bruxo + seu modificador de Carisma (mínimo 1).',
+      'Você não pode usar esta característica de novo até terminar um descanso curto ou longo.'
+    ], mine:'<b>Vaelun:</b> +{prof} de dano por acerto e crítico em 19–20; se o alvo morrer, recupera <b>{curseHeal}</b> PV. Rajada Mística contra amaldiçoado: {ebDmg} + {prof}. Rapieira: {rapDmg} + {prof}. Marque o uso na aba Combate.' },
+    { name:'Guerreiro Maldito', sub:'Nível 1', desc:[
+      'Você adquire o treinamento necessário para se armar para a batalha: ganha proficiência com armaduras médias, escudos e armas marciais.',
+      'A influência do seu patrono também permite canalizar misticamente sua vontade através de uma arma específica. Sempre que terminar um descanso longo, você pode tocar uma arma com a qual tenha proficiência e que não tenha a propriedade Duas Mãos. Ao atacar com essa arma, você pode usar seu modificador de Carisma, em vez de Força ou Destreza, nas jogadas de ataque e de dano. Esse benefício dura até você terminar um descanso longo. Se mais tarde ganhar o Pacto da Lâmina, o benefício se estende a toda arma de pacto que conjurar.'
+    ], mine:'<b>Vaelun:</b> arma tocada = rapieira → <b>{atk}</b> para acertar, <b>{rapDmg}</b>. Uma segunda arma no meio do dia usaria Destreza ({dexS}). Pode vestir armadura média e escudo sem perder magia — veja a aba Mais.' },
+    { name:'Invocação: Explosão Agonizante', sub:'Nível 2 · pré-requisito: Rajada Mística', desc:[
+      'Quando você conjura Rajada Mística, some seu modificador de Carisma ao dano causado por cada raio que acertar.'
+    ], mine:'<b>Vaelun:</b> +{cha} por raio → {ebDmg}.' },
+    { name:'Invocação: Voz do Mestre da Corrente', sub:'Nível 2 · pré-requisito: Pacto da Corrente', desc:[
+      'Você pode se comunicar telepaticamente com seu familiar e perceber através dos sentidos dele enquanto estiverem no mesmo plano de existência. Além disso, enquanto percebe através dos sentidos do familiar, você também pode falar através dele com sua própria voz, mesmo que o familiar normalmente seja incapaz de falar.'
+    ], mine:'<b>Na prática:</b> o Diabrete vira um espião sem limite de distância. Invisível, ele entra num lugar; você vê, ouve e pode falar pela boca dele — inclusive na voz do alias da vez.' },
+    { name:'Dádiva do Pacto: Pacto da Corrente', sub:'Nível 3', desc:[
+      'Você aprende a magia Achar Familiar e pode conjurá-la como um ritual. A magia não conta no seu número de magias conhecidas.',
+      'Ao conjurar a magia, você pode escolher uma das formas normais para o familiar ou uma das seguintes formas especiais: diabrete, pseudodragão, quasit ou sprite.',
+      'Além disso, quando você realiza a ação de Ataque, pode abrir mão de um dos seus próprios ataques para permitir que seu familiar faça um ataque com a reação dele.'
+    ], mine:'<b>Vaelun:</b> Diabrete (Ferrão +5, 1d4+3 perfurante + 3d6 veneno, CD 11 Con para metade). Vale a pena ceder o ataque da rapieira ({rapDmg}) quando o Diabrete pode picar — a média do veneno sozinha é 10.' },
+    { name:'Mente Desperta (telepatia 9 m)', sub:'Patrono Grande Antigo · nível 1', tag:'warn:Confirmar', desc:[
+      'Sua mente alienígena permite que você fale telepaticamente com qualquer criatura que possa ver a até 9 m de você. Você não precisa compartilhar um idioma com a criatura para ela entender suas mensagens telepáticas, mas ela precisa ser capaz de entender pelo menos um idioma.'
+    ], mine:'<b>Atenção:</b> esta característica pertence ao patrono <b>Grande Antigo</b>, não à Lâmina Maldita. Um personagem só tem um patrono, então ela provavelmente é uma concessão do mestre (ou foi trocada por algo). Confirmar. Se ficar, é só de você para a criatura — ela não responde por telepatia.' },
+  ]},
+  { group:'Antecedente — Charlatão', src:"Player's Handbook", items:[
+    { name:'Identidade Falsa', sub:'Característica de antecedente', desc:[
+      'Você criou uma segunda identidade que inclui documentação, conhecidos estabelecidos e disfarces que permitem assumir essa persona. Além disso, você pode falsificar documentos, incluindo papéis oficiais e cartas pessoais, desde que já tenha visto um exemplo do tipo de documento ou da caligrafia que está tentando copiar.'
+    ], mine:'<b>Vaelun:</b> com Metamorfo, a "segunda identidade" pode ser literalmente outro rosto — e o Diabrete atende pelo nome do alias do momento. Falsificação usa as ferramentas de falsário (proficiência +{prof}).' },
+    { name:'Proficiências e equipamento', sub:'Antecedente', desc:[
+      'Perícias: Enganação, Prestidigitação. Ferramentas: kit de disfarce, ferramentas de falsário. Equipamento inicial: roupas finas, kit de disfarce, ferramentas do golpe (dez garrafas fechadas com líquido colorido, dados viciados, baralho marcado ou anel de sinete de um duque imaginário) e uma bolsa com 15 po.'
+    ], mine:'' },
+  ]},
+];
+
+// ---- Estado ----
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function merge(base, extra){
   const out = clone(base);
@@ -397,7 +734,6 @@ function merge(base, extra){
   return out;
 }
 function migrate(parsed){
-  // Versão anterior guardava a armadura como "base|cap".
   const legacy = {'0|0':'none','1|0':'leather','2|0':'studded','2|2':'hide','3|2':'chain'};
   if(parsed && typeof parsed.armor === 'string' && legacy[parsed.armor]) parsed.armor = legacy[parsed.armor];
   return parsed;
@@ -426,14 +762,58 @@ function showSavedAt(){
   const el = $('savedAt');
   if(!storageOk){ el.textContent = 'Não foi possível salvar neste navegador — use "Dados" para exportar.'; return; }
   if(!S.savedAt){ el.textContent = ''; return; }
-  const d = new Date(S.savedAt);
-  el.textContent = 'Salvo automaticamente · ' + d.toLocaleString('pt-BR');
+  el.textContent = 'Salvo automaticamente · ' + new Date(S.savedAt).toLocaleString('pt-BR');
 }
 
 let toastTimer = null;
 function toast(msg){
   const t = $('toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+// ---- Construção única dos cards ----
+const ph = s => s.replace(/\{([a-zA-Z]+)\}/g, (_,k)=>`<span data-v="${k}"></span>`);
+function tagHtml(t){
+  if(!t) return '';
+  const [cls, txt] = t.includes(':') ? t.split(':') : ['', t];
+  return `<span class="tag ${cls}">${txt}</span>`;
+}
+function spellCard(sp){
+  return `<details class="card">
+    <summary><span><span class="t">${sp.name}${tagHtml(sp.tag)}</span><span class="s">${sp.sub}</span></span></summary>
+    <div class="card-body">
+      <dl class="stats">
+        <dt>Tempo</dt><dd>${sp.time}</dd>
+        <dt>Alcance</dt><dd>${sp.range}</dd>
+        <dt>Componentes</dt><dd>${sp.comp}</dd>
+        <dt>Duração</dt><dd>${sp.dur}</dd>
+      </dl>
+      ${sp.desc.map(p=>'<p>'+ph(p)+'</p>').join('')}
+      ${sp.mine ? '<div class="mine">'+ph(sp.mine)+'</div>' : ''}
+    </div></details>`;
+}
+function buildSpells(){
+  ['spellsC','spells1','spells2','spellsR','spellsP'].forEach(id=>{ $(id).innerHTML=''; });
+  SPELLS.forEach(sp=>{ $(sp.list).insertAdjacentHTML('beforeend', spellCard(sp)); });
+}
+function buildFeatures(){
+  const el = $('featList'); el.innerHTML='';
+  FEATURES.forEach(g=>{
+    let html = `<div class="box"><h2>${g.group}</h2><p class="meta-line">${ph(g.src)}</p>`;
+    g.items.forEach(f=>{
+      html += `<details class="card">
+        <summary><span><span class="t">${f.name}${tagHtml(f.tag)}</span><span class="s">${f.sub}</span></span></summary>
+        <div class="card-body">${f.desc.map(p=>'<p>'+ph(p)+'</p>').join('')}${f.mine ? '<div class="mine">'+ph(f.mine)+'</div>' : ''}</div>
+      </details>`;
+    });
+    el.insertAdjacentHTML('beforeend', html+'</div>');
+  });
+}
+function buildArmorSelect(){
+  const sel = $('armor'); sel.innerHTML='';
+  Object.entries(ARMOR).forEach(([k,a])=>{
+    const o = document.createElement('option'); o.value=k; o.textContent=a.n; sel.appendChild(o);
+  });
 }
 
 function buildSkills(){
@@ -446,9 +826,10 @@ function buildSkills(){
     el.appendChild(row);
   });
 }
+const skillBonus = name => { const s = SKILLS.find(x=>x[0]===name); return mod(S.scores[s[1]]) + (s[2]?PROF:0); };
 
 function pips(containerId, total, used, onToggle, failStyle){
-  const el = $(containerId); el.innerHTML='';
+  const el = $(containerId); if(!el) return; el.innerHTML='';
   for(let i=0;i<total;i++){
     const p = document.createElement('button');
     p.type = 'button';
@@ -458,8 +839,23 @@ function pips(containerId, total, used, onToggle, failStyle){
     el.appendChild(p);
   }
 }
-// Clicar no último pip marcado desmarca; clicar em qualquer outro marca até ele.
 const toggleTo = (cur, i) => (i+1===cur) ? i : i+1;
+
+function computed(){
+  const sc = S.scores, cha = mod(sc.cha);
+  const armor = ARMOR[S.armor] || ARMOR.none;
+  const ac = 10 + armor.base + Math.min(mod(sc.dex), armor.cap) + (S.shield?2:0);
+  const dmg = (die, m) => die + (m ? ' '+sg(m) : '');
+  return {
+    level:LEVEL, prof:PROF, profS:sg(PROF), cha, chaS:sg(cha), dexS:sg(mod(sc.dex)), conS:sg(mod(sc.con)), intS:sg(mod(sc.int)),
+    dc:8+PROF+cha, atk:sg(PROF+cha), ac, acShield:ac+5,
+    rapDmg:dmg('1d8',cha), ebDmg:dmg('1d10',cha), beams:EB_BEAMS,
+    slots:WARLOCK_SLOTS, slotLvl:WARLOCK_SLOT_LVL, cmdTargets:WARLOCK_SLOT_LVL,
+    curseHeal:Math.max(1, LEVEL+cha),
+    stealth:sg(skillBonus('Furtividade')), decep:sg(skillBonus('Enganação')),
+    insight:sg(skillBonus('Intuição')), persu:sg(skillBonus('Persuasão')),
+  };
+}
 
 function render(){
   const sc = S.scores;
@@ -469,10 +865,12 @@ function render(){
     $('m'+cap(a)).textContent = sg(mod(sc[a]));
   });
 
-  const armor = ARMOR[S.armor] || ARMOR.none;
-  const dexMod = Math.min(mod(sc.dex), armor.cap);
-  $('ac').textContent = 10 + armor.base + dexMod + (S.shield?2:0);
+  const c = computed();
+  document.querySelectorAll('[data-v]').forEach(el=>{ const v = c[el.dataset.v]; el.textContent = (v===undefined?'?':v); });
+  $('ac').textContent = c.ac;
   $('ini').textContent = sg(mod(sc.dex));
+  const armor = ARMOR[S.armor] || ARMOR.none;
+  $('acNote').textContent = armor.n.split(' ·')[0] + (S.shield?' + escudo':'') + (armor.stealth?' · desvantagem em Furtividade':'') + ' · Escudo (magia): CA '+(c.ac+5);
 
   $('svStr').textContent = sg(mod(sc.str));
   $('svDex').textContent = sg(mod(sc.dex));
@@ -481,20 +879,15 @@ function render(){
   $('svWis').textContent = sg(mod(sc.wis)+PROF);
   $('svCha').textContent = sg(mod(sc.cha)+PROF);
 
-  const chaMod = mod(sc.cha);
-  $('spellDc').textContent = 8+PROF+chaMod;
-  $('spellAtk').textContent = sg(PROF+chaMod);
-  $('atkMelee').textContent = sg(PROF+chaMod);
-  $('atkSpell').textContent = sg(PROF+chaMod);
-  $('dmgMelee').textContent = '1d8'+(chaMod?sg(chaMod):'');
-  $('dmgBlast').textContent = '1d10'+(chaMod?sg(chaMod):'');
-
-  $('ppc').textContent = 10+mod(sc.wis);
-  $('ppi').textContent = 10+mod(sc.wis)+PROF;
+  $('ppc').textContent = 10+skillBonus('Percepção');
+  $('ppi').textContent = 10+skillBonus('Intuição');
+  $('ppv').textContent = 10+skillBonus('Investigação');
 
   buildSkills();
 
-  pips('pipsSlots', S.slots.total, S.slots.used, i=>{ S.slots.used = toggleTo(S.slots.used, i); });
+  const slotToggle = i=>{ S.slots.used = toggleTo(S.slots.used, i); };
+  pips('pipsSlots', S.slots.total, S.slots.used, slotToggle);
+  pips('pipsSlots2', S.slots.total, S.slots.used, slotToggle);
   pips('pipsCurse', S.curse.total, S.curse.used, i=>{ S.curse.used = toggleTo(S.curse.used, i); });
   pips('pipsHd', S.hd.total, S.hd.used, i=>{ S.hd.used = toggleTo(S.hd.used, i); });
   pips('pipsDeathS', 3, S.death.succ, i=>{ S.death.succ = toggleTo(S.death.succ, i); });
@@ -502,6 +895,7 @@ function render(){
 
   const setIfIdle = (id, v) => { const el = $(id); if(document.activeElement !== el) el.value = v; };
   setIfIdle('hpCur', S.hp.cur); setIfIdle('hpMax', S.hp.max); setIfIdle('hpTemp', S.hp.temp);
+  setIfIdle('famCur', S.fam.cur); setIfIdle('famMax', S.fam.max);
   $('armor').value = S.armor;
   $('shield').checked = S.shield;
   setIfIdle('cCp', S.coins.cp); setIfIdle('cSp', S.coins.sp);
@@ -510,6 +904,15 @@ function render(){
   setIfIdle('notes', S.notes);
   showSavedAt();
 }
+
+// ---- Abas ----
+function setTab(name, scroll){
+  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('active', s.id==='tab-'+name));
+  document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  try{ localStorage.setItem(TAB_KEY, name); }catch(e){}
+  if(scroll) window.scrollTo({top:0});
+}
+document.querySelectorAll('.tabbar button').forEach(b=>b.addEventListener('click', ()=>setTab(b.dataset.tab, true)));
 
 // ---- Entradas ----
 ABILS.forEach(a=>{
@@ -525,6 +928,8 @@ $('shield').addEventListener('change', e=>{ S.shield = e.target.checked; save();
 $('hpCur').addEventListener('input', e=>{ S.hp.cur = e.target.value.trim(); save(); });
 $('hpMax').addEventListener('input', e=>{ S.hp.max = e.target.value.trim(); save(); });
 $('hpTemp').addEventListener('input', e=>{ S.hp.temp = e.target.value.trim(); save(); });
+$('famCur').addEventListener('input', e=>{ S.fam.cur = e.target.value.trim(); save(); });
+$('famMax').addEventListener('input', e=>{ S.fam.max = e.target.value.trim(); save(); });
 [['cCp','cp'],['cSp','sp'],['cEp','ep'],['cGp','gp']].forEach(([id,key])=>{
   $(id).addEventListener('input', e=>{ S.coins[key] = e.target.value; save(); });
 });
@@ -533,7 +938,6 @@ $('notes').addEventListener('input', e=>{ S.notes = e.target.value; save(); });
 
 // ---- PV ----
 const num = v => { const n = parseInt(String(v).trim(),10); return Number.isNaN(n) ? null : n; };
-function setHpAmt(v){ $('hpAmt').value = String(v); }
 function adjustHp(sign){
   const amt = Math.abs(num($('hpAmt').value) ?? 1);
   if(!amt) return;
@@ -554,10 +958,10 @@ function adjustHp(sign){
 
 // ---- Descansos ----
 function shortRest(){
-  S.slots.used = 0; S.curse.used = 0; save(); render(); toast('Descanso curto: magias e maldição recuperadas.');
+  S.slots.used = 0; S.curse.used = 0; save(); render(); toast('Descanso curto: espaços e Maldição recuperados.');
 }
 function longRest(){
-  if(!confirm('Descanso longo: recuperar PV, espaços de magia, maldição e metade dos dados de vida?')) return;
+  if(!confirm('Descanso longo: recuperar PV, espaços de magia, Maldição e metade dos dados de vida?')) return;
   S.slots.used = 0; S.curse.used = 0;
   S.hd.used = Math.max(0, S.hd.used - Math.max(1, Math.floor(S.hd.total/2)));
   S.death.succ = 0; S.death.fail = 0;
@@ -626,8 +1030,15 @@ window.addEventListener('scroll', ()=>{
 }, {passive:true});
 window.addEventListener('pagehide', ()=>{ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }catch(e){} });
 
+// ---- Início ----
+buildArmorSelect();
+buildSpells();
+buildFeatures();
 loadLocal();
 render();
+let startTab = 'combate';
+try{ const t = localStorage.getItem(TAB_KEY); if(t && $('tab-'+t)) startTab = t; }catch(e){}
+setTab(startTab, false);
 
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
   navigator.serviceWorker.register('sw.js').catch(()=>{});
